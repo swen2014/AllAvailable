@@ -34,4 +34,8 @@ public class CustomeException extends Exception {
 	public void setExpMsg(String expMsg) {
 		this.expMsg = expMsg;
 	}
+	
+	public String printErr() {
+		return null;
+	}
 }

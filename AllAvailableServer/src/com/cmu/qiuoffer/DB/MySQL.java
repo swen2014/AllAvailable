@@ -11,13 +11,13 @@ import java.sql.ResultSet;
 public class MySQL extends CommonDB{
 	
 	@Override
-	public ResultSet executeQuery() {
+	public ResultSet executeQuery(String sql) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public boolean executeUpdate() {
+	public boolean executeUpdate(String sql) {
 		// TODO Auto-generated method stub
 		return false;
 	}
