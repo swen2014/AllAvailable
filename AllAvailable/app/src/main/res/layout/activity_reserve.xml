@@ -11,7 +11,7 @@
     tools:context="com.cmu.smartphone.allavailable.ui.ReserveActivity">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/nextRoomTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -20,7 +20,7 @@
         android:text="@string/next_hint" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/locationTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
