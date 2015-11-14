@@ -1,4 +1,4 @@
-package com.cmu.qiuoffer.Bean;
+package com.cmu.qiuoffer.Entities;
 
 /**
  * RoomBean Class
@@ -8,20 +8,13 @@ package com.cmu.qiuoffer.Bean;
  */
 public class RoomBean {
 
-	private boolean roomId;
+	private int roomId;
 	private int capacity;
 	private boolean type;
 	private boolean lock;
 	private String imgSrc;
 
-	public boolean isRoomId() {
-		return roomId;
-	}
-
-	public void setRoomId(boolean roomId) {
-		this.roomId = roomId;
-	}
-
+	
 	public int getCapacity() {
 		return capacity;
 	}
@@ -52,6 +45,20 @@ public class RoomBean {
 
 	public void setImgSrc(String imgSrc) {
 		this.imgSrc = imgSrc;
+	}
+
+	/**
+	 * @return the roomId
+	 */
+	public int getRoomId() {
+		return roomId;
+	}
+
+	/**
+	 * @param roomId the roomId to set
+	 */
+	public void setRoomId(int roomId) {
+		this.roomId = roomId;
 	}
 
 }

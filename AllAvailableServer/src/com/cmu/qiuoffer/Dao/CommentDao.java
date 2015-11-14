@@ -2,7 +2,7 @@ package com.cmu.qiuoffer.Dao;
 
 import java.util.List;
 
-import com.cmu.qiuoffer.Bean.CommentBean;
+import com.cmu.qiuoffer.Entities.CommentBean;
 
 /**
  * CommentDao Class
@@ -17,7 +17,7 @@ public class CommentDao {
 	 * @param roomId Room id
 	 * @return All comments of a room in a list
 	 */
-	public List<CommentBean> getComments(String roomId) {
+	public List<CommentBean> getComments(int roomId) {
 		return null;
 	}
 	
@@ -29,7 +29,7 @@ public class CommentDao {
 	 * @param pic
 	 * @return
 	 */
-	public boolean makeComment(String userId, String roomId, String content, String pic) {
+	public boolean makeComment(String userId, int roomId, String content, String pic) {
 		return false;
 	}
 }
