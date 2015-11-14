@@ -1,5 +1,7 @@
 package com.cmu.qiuoffer.DB;
 
+import java.sql.ResultSet;
+
 /**
  * MySQL class
  * @author Xingbang (Simba) Tian

@@ -25,6 +25,18 @@ public class SeatOperation extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		String action = request.getParameter("action");
+		if(action != null) {
+			if(action.equals("book")) {
+				
+			}
+			else if(action.equals("cancel")) {
+				
+			}
+			else if(action.equals("history")) {
+				
+			}
+		}
 	}
 
 	/**
@@ -32,6 +44,7 @@ public class SeatOperation extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		doGet(request, response);
 	}
 
 }

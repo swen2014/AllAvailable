@@ -1,5 +1,9 @@
 package com.cmu.qiuoffer.DB;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
 /**
  * Abstract class for database connection
  * @author Xingbang (Simba) Tian

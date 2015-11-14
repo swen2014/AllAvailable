@@ -25,6 +25,7 @@ public class LogIn extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		doPost(request, response);
 	}
 
 	/**
@@ -32,6 +33,10 @@ public class LogIn extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		String email = request.getParameter("uid");
+		String pwdmd5 = request.getParameter("pwd");
+		
+		// Use UserDao to authenticate the user login request
 	}
 
 }

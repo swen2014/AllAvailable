@@ -10,6 +10,7 @@ public class CommentBean {
 	private int commentId;
 	private String date;
 	private String time;
+	private String title;
 	private String content;
 	private String userId;
 	private int roomId;
@@ -60,6 +61,20 @@ public class CommentBean {
 
 	public void setRoomId(int roomId) {
 		this.roomId = roomId;
+	}
+
+	/**
+	 * @return the title
+	 */
+	public String getTitle() {
+		return title;
+	}
+
+	/**
+	 * @param title the title to set
+	 */
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 }
