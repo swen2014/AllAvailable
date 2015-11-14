@@ -1,5 +1,11 @@
 package com.cmu.qiuoffer.DB;
 
+/**
+ * MySQL class
+ * @author Xingbang (Simba) Tian
+ * @verison 1.0
+ * @since 11/13/2015
+ */
 public class MySQL extends CommonDB{
 	
 	@Override

@@ -1,5 +1,11 @@
 package com.cmu.qiuoffer.Exception;
 
+/**
+ * Custome exception class
+ * @author Xingbang (Simba) Tian
+ * @version 1.0
+ * @since 11/13/2015
+ */
 public class CustomeException extends Exception {
 	/**
 	 * 
