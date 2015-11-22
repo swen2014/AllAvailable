@@ -1,4 +1,4 @@
-package com.cmu.smartphone.allavailable.ws.remote;
+package com.cmu.smartphone.allavailable.ws.local;
 
 import android.content.Context;
 import android.location.Location;

@@ -18,20 +18,21 @@
 
     <Button
         android:id="@+id/comment_button"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:text="@string/comment" />
+        android:background="@color/colorButton"
+        android:text="@string/comment"
+        android:textColor="@color/colorText" />
 
     <ListView
+        android:id="@+id/seatListView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/seatListView"
-        android:layout_below="@+id/imageView"
-        android:layout_centerHorizontal="true"
         android:layout_above="@+id/comment_button"
-        />
+        android:layout_below="@+id/imageView"
+        android:layout_centerHorizontal="true" />
 
 
 </RelativeLayout>

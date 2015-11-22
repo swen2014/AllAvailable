@@ -23,7 +23,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.MainActivity"></activity>
+        <activity android:name=".ui.MainActivity" />
         <activity
             android:name=".ui.BuildingActivity"
             android:parentActivityName=".ui.MainActivity">
@@ -31,19 +31,43 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.MainActivity" />
         </activity>
-        <activity android:name=".ui.RoomListActivity"
+        <activity
+            android:name=".ui.RoomListActivity"
             android:parentActivityName=".ui.BuildingActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.BuildingActivity" />
         </activity>
-        <activity android:name=".ui.SeatInfoActivity"
+        <activity
+            android:name=".ui.SeatInfoActivity"
             android:parentActivityName=".ui.RoomListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.RoomListActivity" />
         </activity>
-        <activity android:name=".ui.ReserveActivity"
+        <activity
+            android:name=".ui.ReserveActivity"
+            android:parentActivityName=".ui.SeatInfoActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.SeatInfoActivity" />
+        </activity>
+        <activity
+            android:name=".ui.ReserveDetailActivity"
+            android:parentActivityName=".ui.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.MainActivity" />
+        </activity>
+        <activity
+            android:name=".ui.HistoryActivity"
+            android:parentActivityName=".ui.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.MainActivity" />
+        </activity>
+        <activity
+            android:name=".ui.CommentActivity"
             android:parentActivityName=".ui.SeatInfoActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

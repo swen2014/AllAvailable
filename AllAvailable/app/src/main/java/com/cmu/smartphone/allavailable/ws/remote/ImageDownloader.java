@@ -1,4 +1,4 @@
-package com.cmu.smartphone.allavailable.ws.local;
+package com.cmu.smartphone.allavailable.ws.remote;
 
 /**
  * Created by wangxi on 11/13/15.

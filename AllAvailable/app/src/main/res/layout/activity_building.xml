@@ -16,7 +16,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:text="@string/building_label" />
+        android:text="@string/building_label"
+        android:textAppearance="?android:attr/textAppearanceMedium"/>
 
     <ListView
         android:id="@+id/buildingListView"

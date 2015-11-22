@@ -3,7 +3,7 @@
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password (optional)</string>
+    <string name="prompt_password">Password</string>
     <string name="action_sign_in">Sign in or register</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="error_invalid_email">This email address is invalid</string>
@@ -16,9 +16,13 @@
     <string name="action_new_schedule">Create New Schedule</string>
     <string name="action_view_history">View History</string>
     <string name="next_hint">Your Next Reserve Room:</string>
+    <string name="reserve_hint">You Have Reserved This Seat:</string>
     <string name="building_label">Buildings:</string>
     <string name="comment">comment</string>
     <string name="date">Date:</string>
     <string name="time">Time:</string>
     <string name="period">Period:</string>
+    <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
+    <string name="reschedule">reschedule</string>
 </resources>
