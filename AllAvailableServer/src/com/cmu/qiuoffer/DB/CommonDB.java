@@ -17,6 +17,6 @@ public abstract class CommonDB {
 	private Connection conn;
 	private Statement stmt;
 	
-	public abstract ResultSet executeQuery();
-	public abstract boolean executeUpdate();
+	public abstract ResultSet executeQuery(String sql);
+	public abstract boolean executeUpdate(String sql);
 }

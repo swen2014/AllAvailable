@@ -10,7 +10,7 @@
     tools:context="com.cmu.smartphone.allavailable.ui.SeatInfoActivity">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/seatImage"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:src="@drawable/seat" />
@@ -30,6 +30,12 @@
         android:id="@+id/seatListView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+<<<<<<< HEAD
+=======
+        android:id="@+id/seatListView"
+        android:layout_below="@+id/seatImage"
+        android:layout_centerHorizontal="true"
+>>>>>>> ebb3e8554e68f7baf53fffbec8868293f6c62ba9
         android:layout_above="@+id/comment_button"
         android:layout_below="@+id/imageView"
         android:layout_centerHorizontal="true" />

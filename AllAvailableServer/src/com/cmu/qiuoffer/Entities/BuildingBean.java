@@ -1,4 +1,4 @@
-package com.cmu.qiuoffer.Bean;
+package com.cmu.qiuoffer.Entities;
 
 /**
  * BuildingBean Class
