@@ -14,6 +14,7 @@ public class CommentBean {
 	private String content;
 	private String userId;
 	private int roomId;
+	private String imagePath;
 
 	public int getCommentId() {
 		return commentId;
@@ -61,6 +62,15 @@ public class CommentBean {
 
 	public void setRoomId(int roomId) {
 		this.roomId = roomId;
+	}
+	
+
+	public String getImagePath() {
+		return imagePath;
+	}
+
+	public void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
 	}
 
 	/**
