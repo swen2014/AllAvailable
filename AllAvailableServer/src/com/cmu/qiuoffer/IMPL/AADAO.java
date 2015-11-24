@@ -1,7 +1,9 @@
 package com.cmu.qiuoffer.IMPL;
 
+import java.sql.PreparedStatement;
 import java.util.List;
 
+import com.cmu.qiuoffer.DB.MySQL;
 import com.cmu.qiuoffer.Entities.BuildingBean;
 import com.cmu.qiuoffer.Entities.CommentBean;
 
@@ -14,6 +16,7 @@ import com.cmu.qiuoffer.Entities.CommentBean;
  */
 
 public class AADAO {
+	private MySQL mysql;
 	
 
 	/**
@@ -126,11 +129,14 @@ public class AADAO {
 	 * @return All building within system
 	 */
 	public List<BuildingBean> getBuildings(){
+		PreparedStatement ps = null;
+		
+		
 		return null;
 	}
 	
 	/**
-	 * Make a buidling
+	 * Make a building
 	 * @param buildingId 
 	 * @param buildingName
 	 * @return
