@@ -9,21 +9,4 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.cmu.smartphone.allavailable.ui.HistoryActivity">
 
-
-    <TextView
-        android:id="@+id/listName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:text="@string/histories"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <ListView
-        android:id="@+id/historyListView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/listName"
-        android:layout_centerHorizontal="true" />
-
-
 </RelativeLayout>

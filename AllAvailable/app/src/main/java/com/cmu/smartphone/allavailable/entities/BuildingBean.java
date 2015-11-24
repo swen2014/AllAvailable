@@ -1,5 +1,7 @@
 package com.cmu.smartphone.allavailable.entities;
 
+import java.io.Serializable;
+
 /**
  * BuildingBean Class
  *
@@ -7,7 +9,7 @@ package com.cmu.smartphone.allavailable.entities;
  * @version 1.0
  * @since 11/13/2015
  */
-public class BuildingBean {
+public class BuildingBean implements Serializable{
     private int buildingId;
     private String buildingName;
 

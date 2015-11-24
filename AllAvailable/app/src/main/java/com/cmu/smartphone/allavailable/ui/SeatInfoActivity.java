@@ -40,7 +40,8 @@ public class SeatInfoActivity extends AppCompatActivity {
         commentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(SeatInfoActivity.this, CommentActivity.class);
+                startActivity(intent);
             }
         });
     }

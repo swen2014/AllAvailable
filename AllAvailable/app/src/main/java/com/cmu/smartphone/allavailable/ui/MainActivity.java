@@ -1,13 +1,18 @@
 package com.cmu.smartphone.allavailable.ui;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.cmu.smartphone.allavailable.R;
 import com.cmu.smartphone.allavailable.adapter.ScheduleItemAdapter;
@@ -69,6 +74,16 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, BuildingActivity.class);
             startActivity(intent);
             return true;
+        } else if (id == R.id.action_history) {
+            Intent intent = new Intent(MainActivity.this, HistoryActivity.class);
+            startActivity(intent);
+            return true;
+        } else if (id == R.id.action_call) {
+            Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + "Your Phone_number"));
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "Calling Failed!", Toast.LENGTH_SHORT).show();
+            }
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);

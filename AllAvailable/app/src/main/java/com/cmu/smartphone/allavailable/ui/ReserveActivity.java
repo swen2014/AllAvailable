@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
+import android.text.format.DateFormat;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -14,6 +15,9 @@ import android.widget.Spinner;
 import com.cmu.smartphone.allavailable.R;
 import com.cmu.smartphone.allavailable.fragment.DatePickerFragment;
 import com.cmu.smartphone.allavailable.fragment.TimePickerFragment;
+
+import java.util.Calendar;
+import java.util.Date;
 
 public class ReserveActivity extends AppCompatActivity {
 
@@ -30,6 +34,13 @@ public class ReserveActivity extends AppCompatActivity {
 
         dateButton = (Button) findViewById(R.id.dateButton);
         timeButton = (Button) findViewById(R.id.timeButton);
+
+        Calendar calendar = Calendar.getInstance();
+        Date time = calendar.getTime();
+        CharSequence dateChar = DateFormat.format("mm/dd/yyyy ", time);
+        dateButton.setText(dateChar);
+        CharSequence timeChar = DateFormat.format("hh:mm", time);
+        timeButton.setText(timeChar);
 
         dateButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,13 +83,13 @@ public class ReserveActivity extends AppCompatActivity {
 
     public void showTimePickerDialog(View v) {
         DialogFragment newFragment = new TimePickerFragment();
-        ((TimePickerFragment)newFragment).setParentTimeButton(timeButton);
+        ((TimePickerFragment) newFragment).setParentTimeButton(timeButton);
         newFragment.show(getSupportFragmentManager(), "timePicker");
     }
 
     public void showDatePickerDialog(View v) {
         DialogFragment newFragment = new DatePickerFragment();
-        ((DatePickerFragment)newFragment).setParentDateButton(dateButton);
+        ((DatePickerFragment) newFragment).setParentDateButton(dateButton);
         newFragment.show(getSupportFragmentManager(), "datePicker");
     }
 

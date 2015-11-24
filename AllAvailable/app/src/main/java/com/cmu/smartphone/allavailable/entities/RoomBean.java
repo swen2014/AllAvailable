@@ -1,57 +1,79 @@
 package com.cmu.smartphone.allavailable.entities;
 
+import java.io.Serializable;
+
 /**
  * RoomBean Class
- * @author Xingbang (Simba) Tian
+ *
+ * @author Xi Wang
  * @version 1.0
- * @since 11/13/2015
+ * @since 11/23/2015
  */
-public class RoomBean {
+public class RoomBean implements Serializable {
 
-	private boolean roomId;
-	private int capacity;
-	private boolean type;
-	private boolean lock;
-	private String imgSrc;
+    private static final String CONFERENCE_ROOM = "conference";
+    private static final String STUDY_ROOM = "study";
 
-	public boolean isRoomId() {
-		return roomId;
-	}
+    private String roomId;
+    private int capacity;
+    private String type;
+    private boolean lock;
+    private String imgSrc;
+    private String buildingId;
 
-	public void setRoomId(boolean roomId) {
-		this.roomId = roomId;
-	}
+    public static String getConferenceRoom() {
+        return CONFERENCE_ROOM;
+    }
 
-	public int getCapacity() {
-		return capacity;
-	}
+    public static String getStudyRoom() {
+        return STUDY_ROOM;
+    }
 
-	public void setCapacity(int capacity) {
-		this.capacity = capacity;
-	}
+    public String getRoomId() {
+        return roomId;
+    }
 
-	public boolean isType() {
-		return type;
-	}
+    public void setRoomId(String roomId) {
+        this.roomId = roomId;
+    }
 
-	public void setType(boolean type) {
-		this.type = type;
-	}
+    public int getCapacity() {
+        return capacity;
+    }
 
-	public boolean isLock() {
-		return lock;
-	}
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
+    }
 
-	public void setLock(boolean lock) {
-		this.lock = lock;
-	}
+    public String getType() {
+        return type;
+    }
 
-	public String getImgSrc() {
-		return imgSrc;
-	}
+    public void setType(String type) {
+        this.type = type;
+    }
 
-	public void setImgSrc(String imgSrc) {
-		this.imgSrc = imgSrc;
-	}
+    public boolean isLock() {
+        return lock;
+    }
 
+    public void setLock(boolean lock) {
+        this.lock = lock;
+    }
+
+    public String getBuildingId() {
+        return buildingId;
+    }
+
+    public void setBuildingId(String buildingId) {
+        this.buildingId = buildingId;
+    }
+
+    public String getImgSrc() {
+        return imgSrc;
+    }
+
+    public void setImgSrc(String imgSrc) {
+        this.imgSrc = imgSrc;
+    }
 }

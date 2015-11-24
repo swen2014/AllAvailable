@@ -1,12 +1,14 @@
 package com.cmu.smartphone.allavailable.entities;
 
+import java.io.Serializable;
+
 /**
  * ReservationBean Class
  * @author Xingbang (Simba) Tian
  * @version 1.0
  * @since 11/13/2015
  */
-public class ReservationBean {
+public class ReservationBean implements Serializable {
 	private int reseavationId;
 	private String date;
 	private String time;

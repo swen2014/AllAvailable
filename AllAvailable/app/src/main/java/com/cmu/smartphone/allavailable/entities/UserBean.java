@@ -1,12 +1,14 @@
 package com.cmu.smartphone.allavailable.entities;
 
+import java.io.Serializable;
+
 /**
  * UserBean Class
  * @author Xingbang (Simba) Tian
  * @version 1.0
  * @since 11/13/2015
  */
-public class UserBean {
+public class UserBean implements Serializable {
 
 	private String email;
 	private String password;
