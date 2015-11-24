@@ -1,7 +1,8 @@
-package com.cmu.qiuoffer.Dao;
+package com.cmu.qiuoffer.IMPL;
 
 import java.util.List;
 
+import com.cmu.qiuoffer.Entities.BuildingBean;
 import com.cmu.qiuoffer.Entities.CommentBean;
 
 
@@ -116,6 +117,25 @@ public class AADAO {
 	 * @return
 	 */
 	public boolean checkType(String email) {
+		return false;
+	}
+	
+	/**
+	 * Get all building
+	 * @param null
+	 * @return All building within system
+	 */
+	public List<BuildingBean> getBuildings(){
+		return null;
+	}
+	
+	/**
+	 * Make a buidling
+	 * @param buildingId 
+	 * @param buildingName
+	 * @return
+	 */
+	public boolean makeBuilding(int buildingId, String buildingName){
 		return false;
 	}
 }
