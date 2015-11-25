@@ -10,7 +10,6 @@ public class CommentBean {
 	private int commentId;
 	private String date;
 	private String time;
-	private String title;
 	private String content;
 	private String userId;
 	private int roomId;
@@ -71,20 +70,6 @@ public class CommentBean {
 
 	public void setImagePath(String imagePath) {
 		this.imagePath = imagePath;
-	}
-
-	/**
-	 * @return the title
-	 */
-	public String getTitle() {
-		return title;
-	}
-
-	/**
-	 * @param title the title to set
-	 */
-	public void setTitle(String title) {
-		this.title = title;
 	}
 
 }

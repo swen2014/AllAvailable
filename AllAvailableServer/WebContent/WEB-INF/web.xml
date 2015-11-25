@@ -26,6 +26,18 @@
 		<description></description>
 		<servlet-class>com.cmu.qiuoffer.Servlet.LogIn</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>Temp</servlet-name>
+		<display-name>Temp</display-name>
+		<description></description>
+		<servlet-class>com.cmu.qiuoffer.Servlet.Temp</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>TempServlet</servlet-name>
+		<display-name>TempServlet</display-name>
+		<description></description>
+		<servlet-class>com.cmu.qiuoffer.Servlet.TempServlet</servlet-class>
+	</servlet>
 	<servlet-mapping>
 		<servlet-name>UserMain</servlet-name>
 		<url-pattern>/UserMain</url-pattern>
@@ -41,6 +53,14 @@
 	<servlet-mapping>
 		<servlet-name>LogIn</servlet-name>
 		<url-pattern>/LogIn</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>Temp</servlet-name>
+		<url-pattern>/Temp</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>TempServlet</servlet-name>
+		<url-pattern>/TempServlet</url-pattern>
 	</servlet-mapping>
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>

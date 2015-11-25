@@ -1,4 +1,4 @@
-package com.cmu.qiuoffer.Dao;
+package com.cmu.qiuoffer.DAO;
 
 import java.util.List;
 

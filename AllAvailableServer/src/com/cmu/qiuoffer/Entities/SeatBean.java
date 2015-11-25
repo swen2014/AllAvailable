@@ -2,6 +2,7 @@ package com.cmu.qiuoffer.Entities;
 
 /**
  * SeatBean Class
+ * 
  * @author Xingbang (Simba) Tian
  * @version 1.0
  * @since 11/13/2015
@@ -9,8 +10,24 @@ package com.cmu.qiuoffer.Entities;
 public class SeatBean {
 
 	private int seatId;
-	private Boolean status;
+	private boolean occupied;
 	private int roomId;
+	private String name;
+
+	/**
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * @param name
+	 *            the name to set
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
 
 	public int getSeatId() {
 		return seatId;
@@ -20,12 +37,19 @@ public class SeatBean {
 		this.seatId = seatId;
 	}
 
-	public Boolean getStatus() {
-		return status;
+	/**
+	 * @return the occupied
+	 */
+	public boolean isOccupied() {
+		return occupied;
 	}
 
-	public void setStatus(Boolean status) {
-		this.status = status;
+	/**
+	 * @param occupied
+	 *            the occupied to set
+	 */
+	public void setOccupied(boolean occupied) {
+		this.occupied = occupied;
 	}
 
 	public int getRoomId() {
