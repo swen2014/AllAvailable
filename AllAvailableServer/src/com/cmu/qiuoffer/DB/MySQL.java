@@ -2,6 +2,7 @@ package com.cmu.qiuoffer.DB;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import com.cmu.qiuoffer.Util.SQLQueryHelper;
 

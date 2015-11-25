@@ -40,6 +40,7 @@ public abstract class GeneralDAOProxy implements BuildingDAO, CommentDAO, Reserv
 	 * @param roomId Room id
 	 * @return All comments of a room in a list
 	 */
+	@Override
 	public List<CommentBean> getComments(int roomId) {
 		List<CommentBean> re = new LinkedList<CommentBean> ();
 		CommentBean cb;
@@ -78,6 +79,7 @@ public abstract class GeneralDAOProxy implements BuildingDAO, CommentDAO, Reserv
 	 * @param pic
 	 * @return
 	 */
+	@Override
 	public boolean makeComment(String userId, int roomId, String content, String pic) {
 		try {
 			conn = mysql.getConnection();
@@ -106,10 +108,12 @@ public abstract class GeneralDAOProxy implements BuildingDAO, CommentDAO, Reserv
 	 * @param duration
 	 * @return
 	 */
+	@Override
 	public boolean makeReservation(String userId, int seatId, String time, String date, double duration) {
 		return false;
 	}
 	
+	@Override
 	public boolean cancelReservation(int reservationId) {
 		return false;
 	}
@@ -120,6 +124,7 @@ public abstract class GeneralDAOProxy implements BuildingDAO, CommentDAO, Reserv
 	 * @param lock
 	 * @return
 	 */
+	@Override
 	public boolean changeLock(int roomId, boolean lock) {
 		return false;
 	}
@@ -148,6 +153,7 @@ public abstract class GeneralDAOProxy implements BuildingDAO, CommentDAO, Reserv
 	 * @param status
 	 * @return
 	 */
+	@Override
 	public boolean changeStatus(int seatId, boolean status) {
 		return false;
 	}
@@ -167,6 +173,7 @@ public abstract class GeneralDAOProxy implements BuildingDAO, CommentDAO, Reserv
 	 * @param password
 	 * @return
 	 */
+	@Override
 	public String loginCheck(String email, String password) {
 		return null;
 	}
@@ -176,6 +183,7 @@ public abstract class GeneralDAOProxy implements BuildingDAO, CommentDAO, Reserv
 	 * @param email
 	 * @return
 	 */
+	@Override
 	public boolean checkType(String email) {
 		return false;
 	}
@@ -185,6 +193,7 @@ public abstract class GeneralDAOProxy implements BuildingDAO, CommentDAO, Reserv
 	 * @param null
 	 * @return All building within system
 	 */
+	@Override
 	public List<BuildingBean> getBuildings(){
 		PreparedStatement ps = null;
 		
@@ -198,12 +207,19 @@ public abstract class GeneralDAOProxy implements BuildingDAO, CommentDAO, Reserv
 	 * @param buildingName
 	 * @return
 	 */
+	@Override
 	public boolean makeBuilding(int buildingId, String buildingName){
 		return false;
 	}
-	
+
 	@Override
-	public ReservationView getReservation() {
+	public void createUser(UserBean user) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public List<SeatBean> getSeats(int roomId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -221,14 +237,10 @@ public abstract class GeneralDAOProxy implements BuildingDAO, CommentDAO, Reserv
 	}
 
 	@Override
-	public List<SeatBean> getSeats(int roomId) {
+	public ReservationView getReservation() {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
 
-	@Override
-	public void createUser(UserBean user) {
-		// TODO Auto-generated method stub
-		
-	}
 }
