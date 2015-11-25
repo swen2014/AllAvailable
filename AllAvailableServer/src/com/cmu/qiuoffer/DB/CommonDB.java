@@ -11,6 +11,6 @@ import java.sql.Statement;
  * @since 11/13/2015
  */
 public abstract class CommonDB {
-	public abstract ResultSet executeQuery(String sql);
-	public abstract boolean executeUpdate(String sql);
+	public abstract Connection getConnection();
+	public abstract void close();
 }

@@ -1,5 +1,11 @@
 package com.cmu.qiuoffer.DAO;
 
+import java.util.List;
+
+import com.cmu.qiuoffer.Entities.ReservationView;
+import com.cmu.qiuoffer.Entities.RoomBean;
+import com.cmu.qiuoffer.Entities.SeatBean;
+import com.cmu.qiuoffer.Entities.UserBean;
 import com.cmu.qiuoffer.IMPL.GeneralDAOProxy;
 
 
@@ -11,5 +17,4 @@ import com.cmu.qiuoffer.IMPL.GeneralDAOProxy;
  */
 
 public class AADAO extends GeneralDAOProxy{
-	
 }
