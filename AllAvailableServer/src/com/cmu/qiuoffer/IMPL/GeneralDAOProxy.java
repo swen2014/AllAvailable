@@ -1,6 +1,9 @@
 package com.cmu.qiuoffer.IMPL;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.LinkedList;
 import java.util.List;
 
 import com.cmu.qiuoffer.DAO.BuildingDAO;
@@ -18,7 +21,7 @@ import com.cmu.qiuoffer.Entities.CommentBean;
  * @version 1.0
  * @since 11/23/2015
  */
-public abstract class GeneralDAOproxy implements BuildingDAO, CommentDAO, ReservationDAO, RoomDAO, SeatDAO, UserDAO {
+public abstract class GeneralDAOProxy implements BuildingDAO, CommentDAO, ReservationDAO, RoomDAO, SeatDAO, UserDAO {
 	private MySQL mysql;
 	
 
@@ -28,6 +31,28 @@ public abstract class GeneralDAOproxy implements BuildingDAO, CommentDAO, Reserv
 	 * @return All comments of a room in a list
 	 */
 	public List<CommentBean> getComments(int roomId) {
+		List<CommentBean> re = new LinkedList<CommentBean> ();
+		CommentBean cb;
+		
+		mysql = new MySQL();
+		mysq
+		ResultSet rs = mysql.executeQuery("SELECT * FROM comment WHERE roomId = '" + roomId + "'");
+		try {
+			while(rs.next()) {
+				cb = new CommentBean();
+				cb.setCommentId(rs.getInt("commentId"));
+				cb.setContent(rs.getString("content"));
+				cb.setDate(rs.getString("date"));
+				cb.setImagePath(rs.getString("imagePath"));
+				cb.setRoomId(rs.getInt(roomId));
+				cb.setTime(rs.getString("time"));
+				cb.setUserId(rs.getString("userId"));
+				re.add(cb);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return null;
 	}
 	

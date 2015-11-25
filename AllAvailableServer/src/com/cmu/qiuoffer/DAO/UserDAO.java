@@ -1,13 +1,15 @@
 package com.cmu.qiuoffer.DAO;
 
+import com.cmu.qiuoffer.Entities.UserBean;
+
 public interface UserDAO {
 		/**
 		 * Check if user name and password matches
 		 * @param email
 		 * @param password
-		 * @return
+		 * @return user name (email address)
 		 */
-		public boolean loginCheck(String email, String password);
+		public String loginCheck(String email, String password);
 		
 		/**
 		 * Check if a user is admin or not
@@ -15,4 +17,6 @@ public interface UserDAO {
 		 * @return
 		 */
 		public boolean checkType(String email);
+		
+		public void createUser(UserBean user);
 }

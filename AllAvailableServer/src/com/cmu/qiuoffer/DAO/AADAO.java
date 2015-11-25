@@ -1,6 +1,6 @@
 package com.cmu.qiuoffer.DAO;
 
-import com.cmu.qiuoffer.IMPL.GeneralDAOproxy;
+import com.cmu.qiuoffer.IMPL.GeneralDAOProxy;
 
 
 /**
@@ -10,6 +10,6 @@ import com.cmu.qiuoffer.IMPL.GeneralDAOproxy;
  * @since 11/23/2015
  */
 
-public class AADAO extends GeneralDAOproxy{
+public class AADAO extends GeneralDAOProxy{
 	
 }

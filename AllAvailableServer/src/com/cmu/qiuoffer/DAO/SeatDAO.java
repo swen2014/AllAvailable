@@ -1,13 +1,11 @@
 package com.cmu.qiuoffer.DAO;
 
+import java.util.List;
+
+import com.cmu.qiuoffer.Entities.SeatBean;
+
 public interface SeatDAO {
-	/**
-	 * Check if a seat is available or not
-	 * @param seatId
-	 * @return
-	 */
-	public boolean checkStatus(int seatId);
-	
+
 	/**
 	 * Change the status of a seat
 	 * @param seatId
@@ -16,10 +14,5 @@ public interface SeatDAO {
 	 */
 	public boolean changeStatus(int seatId, boolean status);
 	
-	/**
-	 * Return the room id of a given seat
-	 * @param seatId
-	 * @return
-	 */
-	public int getRoomId(int seatId);
+	public List<SeatBean> getSeats(int roomId);
 }

@@ -3,7 +3,7 @@ package com.cmu.qiuoffer.Util;
 import java.io.*;
 import java.util.Properties;
 
-public class SqlQueryHelper {
+public class SQLQueryHelper {
 
 	private static final String DATABASEFILEPATH = "DBFile/";
 	
