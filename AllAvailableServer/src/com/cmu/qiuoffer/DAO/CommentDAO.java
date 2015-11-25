@@ -20,5 +20,5 @@ public interface CommentDAO {
 	 * @param pic
 	 * @return
 	 */
-	public boolean makeComment(String userId, int roomId, String content, String pic) ;
+	public boolean makeComment(String userId, int roomId, String content, String pic);
 }

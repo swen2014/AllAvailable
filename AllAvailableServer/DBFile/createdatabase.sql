@@ -1,7 +1,7 @@
 drop database if exists allavailable;
 create database if not exists allavailable;
 use allavailable;
-create table user (email varchar(100) not null, password varchar(100) not null, name varchar(100) not null, primary key(email));
+create table user (email varchar(100) not null, password varchar(40) not null, name varchar(100) not null, primary key(email));
 create table building (buildingId int auto_increment not null, name varchar(255) not null, primary key(buildingId));
 create table room (roomId int auto_increment not null, name varchar(255) not null, capacity int not null, lock_status bool not null, type varchar(255) not null, image_src varchar(255) not null, buildingId int, primary key(roomId), foreign key (buildingId) references building(buildingId) on delete cascade on update cascade);
 create table seat (seatId int auto_increment not null, name varchar(255) not null, roomId int, occupied bool not null, primary key(seatId), foreign key (roomId) references room(roomId) on delete cascade on update cascade);

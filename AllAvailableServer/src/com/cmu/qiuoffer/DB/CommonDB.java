@@ -1,8 +1,6 @@
 package com.cmu.qiuoffer.DB;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.Statement;
 
 /**
  * Abstract class for database connection
@@ -11,12 +9,6 @@ import java.sql.Statement;
  * @since 11/13/2015
  */
 public abstract class CommonDB {
-	private String url; // Database url
-	private String username;
-	private String password;
-	private Connection conn;
-	private Statement stmt;
-	
 	public abstract ResultSet executeQuery(String sql);
 	public abstract boolean executeUpdate(String sql);
 }
