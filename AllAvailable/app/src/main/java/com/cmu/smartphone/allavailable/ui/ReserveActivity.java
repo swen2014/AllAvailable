@@ -6,6 +6,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -16,6 +17,7 @@ import com.cmu.smartphone.allavailable.R;
 import com.cmu.smartphone.allavailable.fragment.DatePickerFragment;
 import com.cmu.smartphone.allavailable.fragment.TimePickerFragment;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -37,6 +39,13 @@ public class ReserveActivity extends AppCompatActivity {
 
         Calendar calendar = Calendar.getInstance();
         Date time = calendar.getTime();
+
+        int month = calendar.get(Calendar.MONTH);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/yyyy");
+        String day = sdf.format(time);
+        Log.v("opop     ", time.toString() + "  " + month + "::" + day);
+
         CharSequence dateChar = DateFormat.format("mm/dd/yyyy ", time);
         dateButton.setText(dateChar);
         CharSequence timeChar = DateFormat.format("hh:mm", time);
