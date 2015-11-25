@@ -1,7 +1,6 @@
 package com.cmu.qiuoffer.DB;
 
 import java.sql.Connection;
-import java.sql.ResultSet;
 
 /**
  * Abstract class for database connection

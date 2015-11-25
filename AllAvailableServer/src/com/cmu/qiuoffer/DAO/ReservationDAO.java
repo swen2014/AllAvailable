@@ -1,5 +1,7 @@
 package com.cmu.qiuoffer.DAO;
 
+import java.util.List;
+
 import com.cmu.qiuoffer.Entities.ReservationView;
 
 public interface ReservationDAO {
@@ -16,5 +18,5 @@ public interface ReservationDAO {
 	
 	public boolean cancelReservation(int reservationId);
 	
-	public ReservationView getReservation();
+	public List<ReservationView> getReservations();
 }

@@ -18,5 +18,5 @@ public interface BuildingDAO {
 	 * @param buildingName
 	 * @return
 	 */
-	public boolean makeBuilding(int buildingId, String buildingName) ;
+	public boolean createBuilding(int buildingId, String buildingName) ;
 }

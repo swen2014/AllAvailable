@@ -46,7 +46,6 @@ public abstract class GeneralDAOProxy implements BuildingDAO, CommentDAO, Reserv
 		CommentBean cb;
 		try {
 			conn = mysql.getConnection();
-			conn.setAutoCommit(false);
 			sql = helper.getSQLTemplate("getComments");
 			stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, roomId);
@@ -63,6 +62,7 @@ public abstract class GeneralDAOProxy implements BuildingDAO, CommentDAO, Reserv
 				cb.setUserId(rs.getString("userId"));
 				re.add(cb);
 			}
+			conn.close();
 			return re;
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
@@ -91,12 +91,17 @@ public abstract class GeneralDAOProxy implements BuildingDAO, CommentDAO, Reserv
 			stmt.setString(2, datetime[0]);
 			stmt.setString(3, datetime[1]);
 			stmt.setString(4, userId);
-			stmt.setString(5, pic);
+			stmt.setInt(5, roomId);
+			stmt.setString(6, pic);
+			stmt.execute();
+			conn.commit();
+			conn.close();
+			return true;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return false;
 		}
-		return false;
 	}
 	
 	/**
@@ -115,7 +120,21 @@ public abstract class GeneralDAOProxy implements BuildingDAO, CommentDAO, Reserv
 	
 	@Override
 	public boolean cancelReservation(int reservationId) {
-		return false;
+		try {
+			conn = mysql.getConnection();
+			conn.setAutoCommit(false);
+			sql = helper.getSQLTemplate("cancelReservation");
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, reservationId);
+			stmt.execute();
+			conn.commit();
+			conn.close();
+			return true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
 	}
 	
 	/**
@@ -126,7 +145,22 @@ public abstract class GeneralDAOProxy implements BuildingDAO, CommentDAO, Reserv
 	 */
 	@Override
 	public boolean changeLock(int roomId, boolean lock) {
-		return false;
+		try {
+			conn = mysql.getConnection();
+			conn.setAutoCommit(false);
+			sql = helper.getSQLTemplate("changeLock");
+			stmt = conn.prepareStatement(sql);
+			stmt.setBoolean(1, lock);
+			stmt.setInt(2, roomId);
+			stmt.execute();
+			conn.commit();
+			conn.close();
+			return true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
 	}
 	
 	/**
@@ -135,7 +169,24 @@ public abstract class GeneralDAOProxy implements BuildingDAO, CommentDAO, Reserv
 	 * @return
 	 */
 	public int getBuildingId(int roomId) {
-		return 0;
+		int id = -1;
+		try {
+			conn = mysql.getConnection();
+			sql = helper.getSQLTemplate("getBuildingId");
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, roomId);
+			ResultSet rs = stmt.executeQuery();
+			while(rs.next()) {
+				id = rs.getInt("roomId");
+				break;
+			}
+			conn.close();
+			return id;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return -1;
+		}
 	}
 	
 	/**
@@ -144,7 +195,24 @@ public abstract class GeneralDAOProxy implements BuildingDAO, CommentDAO, Reserv
 	 * @return
 	 */
 	public boolean checkStatus(int seatId) {
-		return false;
+		boolean status = false;
+		try {
+			conn = mysql.getConnection();
+			sql = helper.getSQLTemplate("checkStatus");
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, seatId);
+			ResultSet rs = stmt.executeQuery();
+			while(rs.next()) {
+				status = rs.getBoolean("occupied");
+				break;
+			}
+			conn.close();
+			return status;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
 	}
 	
 	/**
@@ -155,7 +223,22 @@ public abstract class GeneralDAOProxy implements BuildingDAO, CommentDAO, Reserv
 	 */
 	@Override
 	public boolean changeStatus(int seatId, boolean status) {
-		return false;
+		try {
+			conn = mysql.getConnection();
+			conn.setAutoCommit(false);
+			sql = helper.getSQLTemplate("changeStatus");
+			stmt = conn.prepareStatement(sql);
+			stmt.setBoolean(1, status);
+			stmt.setInt(2, seatId);
+			stmt.execute();
+			conn.commit();
+			conn.close();
+			return true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
 	}
 	
 	/**
@@ -164,7 +247,24 @@ public abstract class GeneralDAOProxy implements BuildingDAO, CommentDAO, Reserv
 	 * @return
 	 */
 	public int getRoomId(int seatId) {
-		return 0;
+		try {
+			int id = -1;
+			conn = mysql.getConnection();
+			sql = helper.getSQLTemplate("changeStatus");
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, seatId);
+			ResultSet rs = stmt.executeQuery();
+			while(rs.next()) {
+				id = rs.getInt("roomId");
+				break;
+			}
+			conn.close();
+			return id;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return -1;
+		}
 	}
 	
 	/**
@@ -175,7 +275,24 @@ public abstract class GeneralDAOProxy implements BuildingDAO, CommentDAO, Reserv
 	 */
 	@Override
 	public String loginCheck(String email, String password) {
-		return null;
+		try {
+			conn = mysql.getConnection();
+			sql = helper.getSQLTemplate("changeStatus");
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, email);
+			stmt.setString(2, password);
+			ResultSet rs = stmt.executeQuery();
+			while(rs.next()) {
+				if(rs.getInt(1) != 0)
+					return email;
+			}
+			rs.close();
+			return null;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	/**
@@ -195,10 +312,26 @@ public abstract class GeneralDAOProxy implements BuildingDAO, CommentDAO, Reserv
 	 */
 	@Override
 	public List<BuildingBean> getBuildings(){
-		PreparedStatement ps = null;
-		
-		
-		return null;
+		List<BuildingBean> re = new LinkedList<BuildingBean> ();
+		BuildingBean bb;
+		try {
+			conn = mysql.getConnection();
+			sql = helper.getSQLTemplate("getBuilding");
+			stmt = conn.prepareStatement(sql);
+			ResultSet rs = stmt.executeQuery();
+			while(rs.next()) {
+				bb = new BuildingBean();
+				bb.setBuildingId(rs.getInt("buildingId"));
+				bb.setBuildingName(rs.getString("name"));
+				re.add(bb);
+			}
+			conn.close();
+			return re;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	/**
@@ -208,37 +341,152 @@ public abstract class GeneralDAOProxy implements BuildingDAO, CommentDAO, Reserv
 	 * @return
 	 */
 	@Override
-	public boolean makeBuilding(int buildingId, String buildingName){
-		return false;
+	public boolean createBuilding(int buildingId, String buildingName){
+		try {
+			conn = mysql.getConnection();
+			conn.setAutoCommit(false);
+			sql = helper.getSQLTemplate("createBuilding");
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, buildingName);
+			stmt.execute();
+			conn.commit();
+			conn.close();
+			return true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 	@Override
 	public void createUser(UserBean user) {
 		// TODO Auto-generated method stub
-		
+		try {
+			conn = mysql.getConnection();
+			conn.setAutoCommit(false);
+			sql = helper.getSQLTemplate("createUser");
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, user.getEmail());
+			stmt.setString(2, user.getPassword());
+			stmt.setString(3, user.getName());
+			stmt.execute();
+			conn.commit();
+			conn.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
 	public List<SeatBean> getSeats(int roomId) {
 		// TODO Auto-generated method stub
+		List<SeatBean> re = new LinkedList<SeatBean> ();
+		SeatBean sb;
+		try {
+			conn = mysql.getConnection();
+			sql = helper.getSQLTemplate("getSeats");
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, roomId);
+			ResultSet rs = stmt.executeQuery();
+			while(rs.next()) {
+				sb = new SeatBean();
+				sb.setName(rs.getString("name"));
+				sb.setOccupied(rs.getBoolean("occupied"));
+				sb.setRoomId(rs.getInt("roomId"));
+				sb.setSeatId(rs.getInt("seatId"));
+				re.add(sb);
+			}
+			conn.close();
+			return re;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return null;
 	}
 
 	@Override
 	public List<RoomBean> getRooms(int buildingId) {
 		// TODO Auto-generated method stub
+		List<RoomBean> re = new LinkedList<RoomBean> ();
+		RoomBean rb;
+		try {
+			conn = mysql.getConnection();
+			sql = helper.getSQLTemplate("getRooms");
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, buildingId);
+			ResultSet rs = stmt.executeQuery();
+			while(rs.next()) {
+				rb = new RoomBean();
+				rb.setBuildingId(buildingId);
+				rb.setCapacity(rs.getInt("capacity"));
+				rb.setImgSrc(rs.getString("image_src"));
+				rb.setLock_status(rs.getBoolean("lock_status"));
+				rb.setName(rs.getString("name"));
+				rb.setRoomId(rs.getInt("roomId"));
+				rb.setType(rs.getString("type"));
+				re.add(rb);
+			}
+			conn.close();
+			return re;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return null;
 	}
 
 	@Override
 	public void createRoom(RoomBean room) {
 		// TODO Auto-generated method stub
-		
+		try {
+			conn = mysql.getConnection();
+			conn.setAutoCommit(false);
+			sql = helper.getSQLTemplate("createRoom");
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, room.getName());
+			stmt.setInt(2, room.getCapacity());
+			stmt.setBoolean(3, false);
+			stmt.setString(4, room.getType());
+			stmt.setString(5, room.getImgSrc());
+			stmt.setInt(6, room.getBuildingId());
+			stmt.execute();
+			conn.commit();
+			conn.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
-	public ReservationView getReservation() {
+	public List<ReservationView> getReservations() {
 		// TODO Auto-generated method stub
+		try {
+			conn = mysql.getConnection();
+			sql = helper.getSQLTemplate("getRooms");
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, buildingId);
+			ResultSet rs = stmt.executeQuery();
+			while(rs.next()) {
+				rb = new RoomBean();
+				rb.setBuildingId(buildingId);
+				rb.setCapacity(rs.getInt("capacity"));
+				rb.setImgSrc(rs.getString("image_src"));
+				rb.setLock_status(rs.getBoolean("lock_status"));
+				rb.setName(rs.getString("name"));
+				rb.setRoomId(rs.getInt("roomId"));
+				rb.setType(rs.getString("type"));
+				re.add(rb);
+			}
+			conn.close();
+			return re;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return null;
 	}
 	
