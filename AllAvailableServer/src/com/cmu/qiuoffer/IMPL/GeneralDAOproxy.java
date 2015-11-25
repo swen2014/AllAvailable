@@ -3,19 +3,22 @@ package com.cmu.qiuoffer.IMPL;
 import java.sql.PreparedStatement;
 import java.util.List;
 
+import com.cmu.qiuoffer.DAO.BuildingDAO;
+import com.cmu.qiuoffer.DAO.CommentDAO;
+import com.cmu.qiuoffer.DAO.ReservationDAO;
+import com.cmu.qiuoffer.DAO.RoomDAO;
+import com.cmu.qiuoffer.DAO.SeatDAO;
+import com.cmu.qiuoffer.DAO.UserDAO;
 import com.cmu.qiuoffer.DB.MySQL;
 import com.cmu.qiuoffer.Entities.BuildingBean;
 import com.cmu.qiuoffer.Entities.CommentBean;
-
-
 /**
- * AADao Class
+ * GeneralDAOproxy Class
  * @author Dudaxi Huang
  * @version 1.0
  * @since 11/23/2015
  */
-
-public class AADAO {
+public abstract class GeneralDAOproxy implements BuildingDAO, CommentDAO, ReservationDAO, RoomDAO, SeatDAO, UserDAO {
 	private MySQL mysql;
 	
 
