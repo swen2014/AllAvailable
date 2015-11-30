@@ -32,7 +32,7 @@ public class DatePickerFragment extends DialogFragment
 
     public void onDateSet(DatePicker view, int year, int month, int day) {
         // Do something with the date chosen by the user
-        parentDateButton.setText(padding_str(month+1) + "/" + padding_str(day) + "/" + padding_str(year));
+        parentDateButton.setText(padding_str(month+1) + " " + padding_str(day) + "/" + padding_str(year));
     }
 
     private static String padding_str(int c) {
@@ -40,5 +40,9 @@ public class DatePickerFragment extends DialogFragment
             return String.valueOf(c);
         else
             return "0" + String.valueOf(c);
+    }
+
+    private static String numTomon(String num){
+
     }
 }
