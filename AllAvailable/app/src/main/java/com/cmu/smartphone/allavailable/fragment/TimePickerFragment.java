@@ -37,7 +37,7 @@ public class TimePickerFragment extends DialogFragment
 
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         // Do something with the time chosen by the user
-        parentTimeButton.setText(padding_str(hourOfDay) + ":" + padding_str(minute));
+        parentTimeButton.setText("  "+padding_str(hourOfDay) + ":" + padding_str(minute));
     }
 
     private static String padding_str(int c) {

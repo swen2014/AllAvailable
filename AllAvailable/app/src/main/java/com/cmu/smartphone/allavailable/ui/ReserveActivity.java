@@ -46,9 +46,9 @@ public class ReserveActivity extends AppCompatActivity {
         String day = sdf.format(time);
         Log.v("opop     ", time.toString() + "  " + month + "::" + day);
 
-        CharSequence dateChar = DateFormat.format("MMM dd/yyyy ", time);
+        CharSequence dateChar = DateFormat.format("  MMM  dd, yyyy ", time);
         dateButton.setText(dateChar);
-        CharSequence timeChar = DateFormat.format("hh:mm", time);
+        CharSequence timeChar = DateFormat.format("  hh:mm", time);
         timeButton.setText(timeChar);
 
         dateButton.setOnClickListener(new View.OnClickListener() {

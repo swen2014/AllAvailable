@@ -4,10 +4,14 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.text.format.DateFormat;
 import android.widget.Button;
 import android.widget.DatePicker;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 public class DatePickerFragment extends DialogFragment
         implements DatePickerDialog.OnDateSetListener {
@@ -32,7 +36,9 @@ public class DatePickerFragment extends DialogFragment
 
     public void onDateSet(DatePicker view, int year, int month, int day) {
         // Do something with the date chosen by the user
-        parentDateButton.setText(padding_str(month+1) + " " + padding_str(day) + "/" + padding_str(year));
+        String displayValue = numTomon(padding_str(month+1) + "/" + padding_str(day) + "/" + padding_str(year));
+
+        parentDateButton.setText(displayValue);
     }
 
     private static String padding_str(int c) {
@@ -42,7 +48,16 @@ public class DatePickerFragment extends DialogFragment
             return "0" + String.valueOf(c);
     }
 
-    private static String numTomon(String num){
+    private static String numTomon(String inputDate){
+        Date dt = null;
+        SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
+        try {
+            dt = format.parse(inputDate);
 
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        CharSequence dateChar = DateFormat.format("  MMM  dd, yyyy ", dt);
+        return dateChar.toString();
     }
 }
