@@ -7,6 +7,7 @@ import com.cmu.qiuoffer.Entities.ReservationView;
 public interface ReservationDAO {
 	/**
 	 * Make a reservation
+	 * 
 	 * @param userId
 	 * @param seatId
 	 * @param time
@@ -14,9 +15,10 @@ public interface ReservationDAO {
 	 * @param duration
 	 * @return
 	 */
-	public boolean makeReservation(String userId, int seatId, String time, String date, double duration);
-	
+	public boolean makeReservation(String userId, int seatId, String time,
+			String date, double duration);
+
 	public boolean cancelReservation(int reservationId);
-	
-	public List<ReservationView> getReservations();
+
+	public List<ReservationView> getReservations(String userEmail);
 }

@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -14,21 +16,26 @@ import com.cmu.qiuoffer.DAO.RoomDAO;
 import com.cmu.qiuoffer.DAO.SeatDAO;
 import com.cmu.qiuoffer.DAO.UserDAO;
 import com.cmu.qiuoffer.DB.MySQL;
+import com.cmu.qiuoffer.DB.SQLHelper;
 import com.cmu.qiuoffer.Entities.BuildingBean;
 import com.cmu.qiuoffer.Entities.CommentBean;
+import com.cmu.qiuoffer.Entities.ReservationBean;
 import com.cmu.qiuoffer.Entities.ReservationView;
 import com.cmu.qiuoffer.Entities.RoomBean;
 import com.cmu.qiuoffer.Entities.SeatBean;
 import com.cmu.qiuoffer.Entities.UserBean;
 import com.cmu.qiuoffer.Util.DateTimeHelper;
 import com.cmu.qiuoffer.Util.SQLQueryHelper;
+
 /**
  * GeneralDAOproxy Class
+ * 
  * @author Dudaxi Huang
  * @version 1.0
  * @since 11/23/2015
  */
-public abstract class GeneralDAOProxy implements BuildingDAO, CommentDAO, ReservationDAO, RoomDAO, SeatDAO, UserDAO {
+public abstract class GeneralDAOProxy implements BuildingDAO, CommentDAO,
+		ReservationDAO, RoomDAO, SeatDAO, UserDAO {
 	private MySQL mysql = new MySQL();
 	private Connection conn;
 	private String sql;
@@ -37,21 +44,24 @@ public abstract class GeneralDAOProxy implements BuildingDAO, CommentDAO, Reserv
 
 	/**
 	 * Get all comments of a room
-	 * @param roomId Room id
+	 * 
+	 * @param roomId
+	 *            Room id
 	 * @return All comments of a room in a list
 	 */
 	@Override
 	public List<CommentBean> getComments(int roomId) {
-		List<CommentBean> re = new LinkedList<CommentBean> ();
+		List<CommentBean> re = new LinkedList<CommentBean>();
 		CommentBean cb;
+		ResultSet rs = null;
 		try {
 			conn = mysql.getConnection();
 			sql = helper.getSQLTemplate("getComments");
 			stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, roomId);
-			
-			ResultSet rs = stmt.executeQuery();
-			while(rs.next()) {
+
+			rs = stmt.executeQuery();
+			while (rs.next()) {
 				cb = new CommentBean();
 				cb.setCommentId(rs.getInt("commentId"));
 				cb.setContent(rs.getString("content"));
@@ -62,25 +72,34 @@ public abstract class GeneralDAOProxy implements BuildingDAO, CommentDAO, Reserv
 				cb.setUserId(rs.getString("userId"));
 				re.add(cb);
 			}
-			conn.close();
 			return re;
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
+		} finally {
+			if (conn != null) {
+				try {
+					mysql.close(rs, stmt, conn);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Make a comment on a room
-	 * @param userId 
+	 * 
+	 * @param userId
 	 * @param roomId
 	 * @param content
 	 * @param pic
 	 * @return
 	 */
 	@Override
-	public boolean makeComment(String userId, int roomId, String content, String pic) {
+	public boolean makeComment(String userId, int roomId, String content,
+			String pic) {
 		try {
 			conn = mysql.getConnection();
 			conn.setAutoCommit(false);
@@ -95,17 +114,26 @@ public abstract class GeneralDAOProxy implements BuildingDAO, CommentDAO, Reserv
 			stmt.setString(6, pic);
 			stmt.execute();
 			conn.commit();
-			conn.close();
+			// conn.close();
 			return true;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
+		} finally {
+			if (conn != null) {
+				try {
+					mysql.close(stmt, conn);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 	}
-	
+
 	/**
 	 * Make a reservation
+	 * 
 	 * @param userId
 	 * @param seatId
 	 * @param time
@@ -114,12 +142,42 @@ public abstract class GeneralDAOProxy implements BuildingDAO, CommentDAO, Reserv
 	 * @return
 	 */
 	@Override
-	public boolean makeReservation(String userId, int seatId, String time, String date, double duration) {
-		return false;
+	public boolean makeReservation(String userId, int seatId, String time,
+			String date, double duration) {
+
+		boolean success = false;
+		try {
+			conn = mysql.getConnection();
+			conn.setAutoCommit(false);
+			sql = helper.getSQLTemplate("addReservation");
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, time);
+			stmt.setString(2, date);
+			stmt.setDouble(3, duration);
+			stmt.setString(4, userId);
+			stmt.setInt(5, seatId);
+			stmt.execute();
+			conn.commit();
+			success = true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			if (conn != null && stmt != null) {
+				try {
+					mysql.close(stmt, conn);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+
+		return success;
 	}
-	
+
 	@Override
 	public boolean cancelReservation(int reservationId) {
+		boolean success = false;
 		try {
 			conn = mysql.getConnection();
 			conn.setAutoCommit(false);
@@ -128,23 +186,31 @@ public abstract class GeneralDAOProxy implements BuildingDAO, CommentDAO, Reserv
 			stmt.setInt(1, reservationId);
 			stmt.execute();
 			conn.commit();
-			conn.close();
-			return true;
+			success = true;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return false;
+		} finally {
+			if (conn != null && stmt != null) {
+				try {
+					mysql.close(stmt, conn);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
 		}
+		return success;
 	}
-	
+
 	/**
 	 * Change the lock of a class
+	 * 
 	 * @param roomId
 	 * @param lock
 	 * @return
 	 */
 	@Override
 	public boolean changeLock(int roomId, boolean lock) {
+		boolean success = false;
 		try {
 			conn = mysql.getConnection();
 			conn.setAutoCommit(false);
@@ -154,43 +220,59 @@ public abstract class GeneralDAOProxy implements BuildingDAO, CommentDAO, Reserv
 			stmt.setInt(2, roomId);
 			stmt.execute();
 			conn.commit();
-			conn.close();
-			return true;
+			success = true;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return false;
+		} finally {
+			try {
+				mysql.close(stmt, conn);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
+
+		return success;
 	}
-	
+
 	/**
 	 * Get the building id of the roomId
+	 * 
 	 * @param roomId
 	 * @return
 	 */
 	public int getBuildingId(int roomId) {
 		int id = -1;
+		ResultSet rs = null;
 		try {
 			conn = mysql.getConnection();
 			sql = helper.getSQLTemplate("getBuildingId");
 			stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, roomId);
-			ResultSet rs = stmt.executeQuery();
-			while(rs.next()) {
+			rs = stmt.executeQuery();
+			while (rs.next()) {
 				id = rs.getInt("roomId");
 				break;
 			}
 			conn.close();
-			return id;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return -1;
+		} finally {
+			if (conn != null && stmt != null) {
+				try {
+					mysql.close(rs, stmt, conn);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 		}
+		return id;
 	}
-	
+
 	/**
 	 * Check if a seat is available or not
+	 * 
 	 * @param seatId
 	 * @return
 	 */
@@ -202,27 +284,36 @@ public abstract class GeneralDAOProxy implements BuildingDAO, CommentDAO, Reserv
 			stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, seatId);
 			ResultSet rs = stmt.executeQuery();
-			while(rs.next()) {
+			while (rs.next()) {
 				status = rs.getBoolean("occupied");
 				break;
 			}
-			conn.close();
-			return status;
+			status = true;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return false;
+		} finally {
+			if (conn != null && stmt != null) {
+				try {
+					mysql.close(stmt, conn);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
 		}
+
+		return status;
 	}
-	
+
 	/**
 	 * Change the status of a seat
+	 * 
 	 * @param seatId
 	 * @param status
 	 * @return
 	 */
 	@Override
 	public boolean changeStatus(int seatId, boolean status) {
+		boolean success = false;
 		try {
 			conn = mysql.getConnection();
 			conn.setAutoCommit(false);
@@ -232,71 +323,104 @@ public abstract class GeneralDAOProxy implements BuildingDAO, CommentDAO, Reserv
 			stmt.setInt(2, seatId);
 			stmt.execute();
 			conn.commit();
-			conn.close();
-			return true;
+			success = true;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return false;
+		} finally {
+			if (conn != null && stmt != null) {
+				try {
+					mysql.close(stmt, conn);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
 		}
+		return success;
 	}
-	
+
 	/**
 	 * Return the room id of a given seat
+	 * 
 	 * @param seatId
 	 * @return
 	 */
 	public int getRoomId(int seatId) {
+		int id = -1;
+		ResultSet rs = null;
 		try {
-			int id = -1;
 			conn = mysql.getConnection();
 			sql = helper.getSQLTemplate("changeStatus");
 			stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, seatId);
-			ResultSet rs = stmt.executeQuery();
-			while(rs.next()) {
+			rs = stmt.executeQuery();
+			while (rs.next()) {
 				id = rs.getInt("roomId");
 				break;
 			}
 			conn.close();
-			return id;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return -1;
+		} finally {
+			if (conn != null && stmt != null && rs != null) {
+				try {
+					mysql.close(rs, stmt, conn);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
 		}
+
+		return id;
 	}
-	
+
 	/**
 	 * Check if user name and password matches
+	 * 
 	 * @param email
 	 * @param password
 	 * @return
 	 */
 	@Override
 	public String loginCheck(String email, String password) {
+		String result = null;
 		try {
 			conn = mysql.getConnection();
-			sql = helper.getSQLTemplate("changeStatus");
+			sql = helper.getSQLTemplate("loginCheck");
+			if (conn == null) {
+				System.out.println("connection is null");
+			}
 			stmt = conn.prepareStatement(sql);
 			stmt.setString(1, email);
 			stmt.setString(2, password);
 			ResultSet rs = stmt.executeQuery();
-			while(rs.next()) {
-				if(rs.getInt(1) != 0)
-					return email;
+			if (rs.next()) {
+				if (rs.getString("email") != null) {
+					if (rs.getString("password").equals(password)) {
+						result = email;
+					} else {
+						result = SQLHelper.AUTHENTICATION_FAILED;
+					}
+				}
 			}
-			rs.close();
-			return null;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return null;
+		} finally {
+			if (sql != null && stmt != null) {
+				try {
+					mysql.close(stmt, conn);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
 		}
+		return result;
 	}
-	
+
 	/**
 	 * Check if a user is admin or not
+	 * 
 	 * @param email
 	 * @return
 	 */
@@ -304,44 +428,55 @@ public abstract class GeneralDAOProxy implements BuildingDAO, CommentDAO, Reserv
 	public boolean checkType(String email) {
 		return false;
 	}
-	
+
 	/**
 	 * Get all building
+	 * 
 	 * @param null
 	 * @return All building within system
 	 */
 	@Override
-	public List<BuildingBean> getBuildings(){
-		List<BuildingBean> re = new LinkedList<BuildingBean> ();
+	public List<BuildingBean> getBuildings() {
+		List<BuildingBean> re = new LinkedList<BuildingBean>();
 		BuildingBean bb;
+		ResultSet rs = null;
 		try {
 			conn = mysql.getConnection();
 			sql = helper.getSQLTemplate("getBuilding");
 			stmt = conn.prepareStatement(sql);
-			ResultSet rs = stmt.executeQuery();
-			while(rs.next()) {
+			rs = stmt.executeQuery();
+			while (rs.next()) {
 				bb = new BuildingBean();
 				bb.setBuildingId(rs.getInt("buildingId"));
 				bb.setBuildingName(rs.getString("name"));
 				re.add(bb);
 			}
-			conn.close();
-			return re;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return null;
+		} finally {
+			if (conn != null && stmt != null && rs != null) {
+				try {
+					mysql.close(rs, stmt, conn);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
 		}
+
+		return re;
 	}
-	
+
 	/**
 	 * Make a building
-	 * @param buildingId 
+	 * 
+	 * @param buildingId
 	 * @param buildingName
 	 * @return
 	 */
 	@Override
-	public boolean createBuilding(int buildingId, String buildingName){
+	public boolean createBuilding(int buildingId, String buildingName) {
+		boolean success = false;
 		try {
 			conn = mysql.getConnection();
 			conn.setAutoCommit(false);
@@ -350,13 +485,22 @@ public abstract class GeneralDAOProxy implements BuildingDAO, CommentDAO, Reserv
 			stmt.setString(1, buildingName);
 			stmt.execute();
 			conn.commit();
-			conn.close();
-			return true;
+			success = true;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return false;
+		} finally {
+			if (conn != null && stmt != null) {
+				try {
+					mysql.close(stmt, conn);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 		}
+
+		return success;
 	}
 
 	@Override
@@ -364,33 +508,42 @@ public abstract class GeneralDAOProxy implements BuildingDAO, CommentDAO, Reserv
 		// TODO Auto-generated method stub
 		try {
 			conn = mysql.getConnection();
-			conn.setAutoCommit(false);
 			sql = helper.getSQLTemplate("createUser");
+			conn.setAutoCommit(false);
 			stmt = conn.prepareStatement(sql);
 			stmt.setString(1, user.getEmail());
 			stmt.setString(2, user.getPassword());
-			stmt.setString(3, user.getName());
+			stmt.setString(3,
+					user.getEmail().substring(0, user.getEmail().indexOf('@')));
 			stmt.execute();
 			conn.commit();
-			conn.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			if (conn != null && stmt != null) {
+				try {
+					mysql.close(stmt, conn);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 
 	@Override
 	public List<SeatBean> getSeats(int roomId) {
 		// TODO Auto-generated method stub
-		List<SeatBean> re = new LinkedList<SeatBean> ();
+		List<SeatBean> re = new LinkedList<SeatBean>();
 		SeatBean sb;
+		ResultSet rs = null;
 		try {
 			conn = mysql.getConnection();
 			sql = helper.getSQLTemplate("getSeats");
 			stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, roomId);
-			ResultSet rs = stmt.executeQuery();
-			while(rs.next()) {
+			rs = stmt.executeQuery();
+			while (rs.next()) {
 				sb = new SeatBean();
 				sb.setName(rs.getString("name"));
 				sb.setOccupied(rs.getBoolean("occupied"));
@@ -398,27 +551,32 @@ public abstract class GeneralDAOProxy implements BuildingDAO, CommentDAO, Reserv
 				sb.setSeatId(rs.getInt("seatId"));
 				re.add(sb);
 			}
-			conn.close();
-			return re;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			if (conn != null && stmt != null) {
+				try {
+					mysql.close(rs, stmt, conn);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
 		}
-		return null;
+		return re;
 	}
 
 	@Override
 	public List<RoomBean> getRooms(int buildingId) {
-		// TODO Auto-generated method stub
-		List<RoomBean> re = new LinkedList<RoomBean> ();
+		List<RoomBean> re = new LinkedList<RoomBean>();
 		RoomBean rb;
+		ResultSet rs = null;
 		try {
 			conn = mysql.getConnection();
 			sql = helper.getSQLTemplate("getRooms");
 			stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, buildingId);
-			ResultSet rs = stmt.executeQuery();
-			while(rs.next()) {
+			rs = stmt.executeQuery();
+			while (rs.next()) {
 				rb = new RoomBean();
 				rb.setBuildingId(buildingId);
 				rb.setCapacity(rs.getInt("capacity"));
@@ -429,13 +587,18 @@ public abstract class GeneralDAOProxy implements BuildingDAO, CommentDAO, Reserv
 				rb.setType(rs.getString("type"));
 				re.add(rb);
 			}
-			conn.close();
-			return re;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			if (conn != null && stmt != null) {
+				try {
+					mysql.close(rs, stmt, conn);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
 		}
-		return null;
+		return re;
 	}
 
 	@Override
@@ -454,41 +617,120 @@ public abstract class GeneralDAOProxy implements BuildingDAO, CommentDAO, Reserv
 			stmt.setInt(6, room.getBuildingId());
 			stmt.execute();
 			conn.commit();
-			conn.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			if (conn != null && stmt != null) {
+				try {
+					mysql.close(stmt, conn);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 
 	@Override
-	public List<ReservationView> getReservations() {
-		// TODO Auto-generated method stub
+	public List<ReservationView> getReservations(String userEmail) {
+		List<ReservationView> reservations = new ArrayList<ReservationView>();
+		ResultSet rs = null;
 		try {
 			conn = mysql.getConnection();
-			sql = helper.getSQLTemplate("getRooms");
+			sql = helper.getSQLTemplate("getReservations");
 			stmt = conn.prepareStatement(sql);
-			stmt.setInt(1, buildingId);
-			ResultSet rs = stmt.executeQuery();
-			while(rs.next()) {
-				rb = new RoomBean();
-				rb.setBuildingId(buildingId);
+			stmt.setString(1, userEmail);
+			rs = stmt.executeQuery();
+			while (rs.next()) {
+				ReservationView view = new ReservationView();
+				BuildingBean building = new BuildingBean();
+				building.setBuildingName(rs.getString("building_name"));
+
+				RoomBean rb = new RoomBean();
+				int roomId = rs.getInt("room_id");
+				rb.setRoomId(roomId);
 				rb.setCapacity(rs.getInt("capacity"));
 				rb.setImgSrc(rs.getString("image_src"));
 				rb.setLock_status(rs.getBoolean("lock_status"));
-				rb.setName(rs.getString("name"));
-				rb.setRoomId(rs.getInt("roomId"));
+				rb.setName(rs.getString("room_name"));
 				rb.setType(rs.getString("type"));
-				re.add(rb);
-			}
-			conn.close();
-			return re;
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
 
+				SeatBean sb = new SeatBean();
+				sb.setName(rs.getString("seat_name"));
+				sb.setSeatId(rs.getInt("seatId"));
+				sb.setRoomId(roomId);
+
+				ReservationBean reservation = new ReservationBean();
+				reservation.setReseavationId(rs.getInt("id"));
+				reservation.setDate(rs.getString("date"));
+				reservation.setTime(rs.getString("time"));
+				reservation.setDuration(rs.getDouble("duration"));
+				reservation.setSeatId(sb.getSeatId());
+
+				view.setBuilding(building);
+				view.setRoom(rb);
+				view.setSeat(sb);
+				view.setReservation(reservation);
+				reservations.add(view);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (conn != null && stmt != null && rs != null) {
+				try {
+					mysql.close(rs, stmt, conn);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return reservations;
+	}
+
+	@Override
+	public boolean queryOccupied(int seatId, String date, String time,
+			double duration) {
+		boolean occupied = false;
+		ResultSet rs = null;
+		try {
+			conn = mysql.getConnection();
+			sql = helper.getSQLTemplate("queryOccupied");
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, seatId);
+			stmt.setString(2, date);
+			stmt.setString(3, time);
+			rs = stmt.executeQuery();
+			if (rs.next()) {
+				String lastTime = rs.getString("time");
+				double lastDuration = rs.getDouble("duration");
+
+				occupied = DateTimeHelper.checkTimeOverlap(time, lastTime,
+						lastDuration);
+			}
+
+			if (!occupied) {
+				sql = helper.getSQLTemplate("queryOccupied2");
+				stmt = conn.prepareStatement(sql);
+				stmt.setInt(1, seatId);
+				stmt.setString(2, date);
+				stmt.setString(3, time);
+				stmt.setString(4, DateTimeHelper.addTime(time, duration));
+				rs = stmt.executeQuery();
+				if (rs.next()) {
+					occupied = true;
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (conn != null && stmt != null && rs != null) {
+				try {
+					mysql.close(rs, stmt, conn);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return occupied;
+	}
 }
