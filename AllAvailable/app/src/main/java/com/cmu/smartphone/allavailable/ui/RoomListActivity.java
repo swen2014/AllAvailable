@@ -1,37 +1,79 @@
 package com.cmu.smartphone.allavailable.ui;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
+import android.widget.TextView;
 
 import com.cmu.smartphone.allavailable.R;
+import com.cmu.smartphone.allavailable.entities.BuildingBean;
+import com.cmu.smartphone.allavailable.entities.RoomBean;
+import com.cmu.smartphone.allavailable.exception.NetworkException;
+import com.cmu.smartphone.allavailable.util.JsonHelper;
+import com.cmu.smartphone.allavailable.ws.remote.DataArrivedHandler;
+import com.cmu.smartphone.allavailable.ws.remote.DataReceiver;
+
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 
 public class RoomListActivity extends AppCompatActivity {
 
     private ListView roomListView;
+    private TextView buildingLabel;
+
+    private DataArrivedHandler handler;
+    private List<RoomBean> roomResults;
+    private BuildingBean building;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room_list);
 
+        Intent intent = getIntent();
+        building = (BuildingBean) intent.getSerializableExtra("building");
+
+        String uriAPI = getResources().getText(R.string.host)
+                + "SeatOperation?action=rooms&bId=" + building.getBuildingId();
+        Log.v("DEBUG", uriAPI);
+        new connectRooms().execute(uriAPI);
+
         roomListView = (ListView) findViewById(R.id.roomListView);
-        String[] rooms = {"Room 1022", "Room 1024", "Room 1026", "Room 1028"};
+        buildingLabel = (TextView) findViewById(R.id.listName);
+        buildingLabel.setText(building.getBuildingName());
+        View loadingView = LayoutInflater.from(this).inflate(R.layout.listfooter,
+                null);
+
+        roomListView.addFooterView(loadingView);
+        handler = new DataArrivedHandler(roomListView, loadingView);
+
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, android.R.id.text1, rooms);
+                android.R.layout.simple_list_item_1, android.R.id.text1, new String[]{});
+
 
         roomListView.setAdapter(adapter);
         roomListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(RoomListActivity.this, SeatInfoActivity.class);
+                intent.putExtra("room", roomResults.get((int) id));
+                intent.putExtra("building", building);
                 startActivity(intent);
             }
         });
@@ -49,5 +91,58 @@ public class RoomListActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public class connectRooms extends AsyncTask<String, Integer, List<RoomBean>> {
+        @Override
+        protected void onPostExecute(List<RoomBean> result) {
+            super.onPostExecute(result);
+            try {
+                if (result == null) {
+                    throw new NetworkException();
+                }
+                roomResults = result;
+                List<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
+                for (int i = 0; i < roomResults.size(); i++) {
+                    HashMap<String, String> item = new HashMap<String, String>();
+                    item.put("title", roomResults.get(i).getName());
+                    list.add(item);
+                }
+
+                SimpleAdapter sa = new SimpleAdapter(RoomListActivity.this, list, android.R.layout.simple_list_item_1,
+                        new String[]{"title"}, new int[]{android.R.id.text1});
+
+                roomListView.setAdapter(sa);
+                handler.serverDataArrived(result, true);
+            } catch (NetworkException ne) {
+                ne.fix(RoomListActivity.this);
+            }
+        }
+
+        @Override
+        protected List<RoomBean> doInBackground(String... arg0) {
+            ArrayList<RoomBean> tmpRooms = null;
+
+            try {
+                Log.v("DEBUG", arg0[0]);
+                URL url = new URL(arg0[0]);
+                HttpURLConnection connection = (HttpURLConnection) url
+                        .openConnection();
+                connection.setConnectTimeout(3000);
+                connection.setRequestMethod("GET");
+                connection.setDoInput(true);
+                int code = connection.getResponseCode();
+                if (code == 200) {
+                    String jsonString = DataReceiver.ChangeInputStream(connection
+                            .getInputStream());
+                    tmpRooms = (ArrayList<RoomBean>) JsonHelper.getRooms(jsonString);
+                }
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return tmpRooms;
+        }
     }
 }

@@ -30,11 +30,11 @@
                 android:layout_marginBottom="5dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="18dp"
-                android:text="@string/next_hint"
+                android:text="@string/will_reserve_hint"
                 android:textColor="#fffefe" />
 
             <TextView
-                android:id="@+id/locationTxt"
+                android:id="@+id/buildingLoc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -44,7 +44,7 @@
                 android:textColor="#fffefe" />
 
             <TextView
-                android:id="@+id/textView3"
+                android:id="@+id/roomLoc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -54,7 +54,7 @@
                 android:textColor="#fffefe" />
 
             <TextView
-                android:id="@+id/textView4"
+                android:id="@+id/seatLoc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"

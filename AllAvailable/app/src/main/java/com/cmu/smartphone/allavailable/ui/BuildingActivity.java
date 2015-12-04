@@ -13,10 +13,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.Toast;
 
 import com.cmu.smartphone.allavailable.R;
 import com.cmu.smartphone.allavailable.entities.BuildingBean;
+import com.cmu.smartphone.allavailable.exception.NetworkException;
 import com.cmu.smartphone.allavailable.util.JsonHelper;
 import com.cmu.smartphone.allavailable.ws.remote.DataArrivedHandler;
 import com.cmu.smartphone.allavailable.ws.remote.DataReceiver;
@@ -63,6 +63,7 @@ public class BuildingActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(BuildingActivity.this, RoomListActivity.class);
+                intent.putExtra("building", buildingResults.get((int) id));
                 startActivity(intent);
             }
         });
@@ -88,23 +89,26 @@ public class BuildingActivity extends AppCompatActivity {
         protected void onPostExecute(List<BuildingBean> result) {
             // TODO Auto-generated method stub
             super.onPostExecute(result);
-            if (result == null) {
-                Toast.makeText(BuildingActivity.this, "Network Problem", Toast.LENGTH_LONG).show();
-                return;
-            }
-            buildingResults = result;
-            List<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
-            for (int i = 0; i < buildingResults.size(); i++) {
-                HashMap<String, String> item = new HashMap<String, String>();
-                item.put("title", buildingResults.get(i).getBuildingName());
-                list.add(item);
-            }
+            try {
+                if (result == null) {
+                    throw new NetworkException();
+                }
+                buildingResults = result;
+                List<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
+                for (int i = 0; i < buildingResults.size(); i++) {
+                    HashMap<String, String> item = new HashMap<String, String>();
+                    item.put("title", buildingResults.get(i).getBuildingName());
+                    list.add(item);
+                }
 
-            SimpleAdapter sa = new SimpleAdapter(BuildingActivity.this, list, android.R.layout.simple_list_item_1,
-                    new String[]{"title"}, new int[]{android.R.id.text1});
+                SimpleAdapter sa = new SimpleAdapter(BuildingActivity.this, list, android.R.layout.simple_list_item_1,
+                        new String[]{"title"}, new int[]{android.R.id.text1});
 
-            buildingListView.setAdapter(sa);
-            handler.serverDataArrived(result, true);
+                buildingListView.setAdapter(sa);
+                handler.serverDataArrived(result, true);
+            } catch (NetworkException ne) {
+                ne.fix(BuildingActivity.this);
+            }
         }
 
         @Override

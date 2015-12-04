@@ -34,6 +34,7 @@
         <activity android:name=".ui.MainActivity" />
         <activity
             android:name=".ui.BuildingActivity"
+            android:launchMode="singleTop"
             android:parentActivityName=".ui.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -41,6 +42,7 @@
         </activity>
         <activity
             android:name=".ui.RoomListActivity"
+            android:launchMode="singleTop"
             android:parentActivityName=".ui.BuildingActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -48,6 +50,7 @@
         </activity>
         <activity
             android:name=".ui.SeatInfoActivity"
+            android:launchMode="singleTop"
             android:parentActivityName=".ui.RoomListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -69,6 +72,7 @@
         </activity>
         <activity
             android:name=".ui.HistoryActivity"
+            android:launchMode="singleTop"
             android:parentActivityName=".ui.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

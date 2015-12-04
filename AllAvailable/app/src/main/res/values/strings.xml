@@ -17,6 +17,7 @@
     <string name="action_view_history">View History</string>
     <string name="action_call_admin">Call Administrator</string>
     <string name="next_hint">Your Next Reserve Room:</string>
+    <string name="will_reserve_hint">You Will Reserve:</string>
     <string name="reserve_hint">You Have Reserved This Seat:</string>
     <string name="building_label">Buildings:</string>
     <string name="comment">comment</string>

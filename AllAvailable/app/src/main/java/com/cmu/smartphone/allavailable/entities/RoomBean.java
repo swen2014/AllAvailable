@@ -11,8 +11,8 @@ import java.io.Serializable;
  */
 public class RoomBean implements Serializable {
 
-    private static final String CONFERENCE_ROOM = "conference";
-    private static final String STUDY_ROOM = "study";
+    public static final String CONFERENCE_ROOM = "conference";
+    public static final String STUDY_ROOM = "study";
 
     private int roomId;
     private String name;
