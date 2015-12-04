@@ -74,7 +74,7 @@ public class HistoryItemAdapter extends BaseAdapter {
                 + reservationView.getReservation().getTime();
         historyOverviewTime.setText(time);
         String room = reservationView.getBuilding().getBuildingName() +
-                ", " + reservationView.getRoom().getRoomId();
+                ", " + reservationView.getRoom().getName();
         historyOverviewRoom.setText(room);
 
         return convertView;

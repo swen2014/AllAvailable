@@ -33,4 +33,6 @@
     <string name="exist_photo">Choose From Gallery</string>
     <string name="done">Done</string>
     <string name="histories">Histories:</string>
+
+    <string name="host">http://172.29.93.237:8080/AllAvailableServer/</string>
 </resources>

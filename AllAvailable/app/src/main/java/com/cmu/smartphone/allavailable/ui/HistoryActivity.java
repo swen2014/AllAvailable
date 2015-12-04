@@ -67,9 +67,9 @@ public class HistoryActivity extends AppCompatActivity {
         building.setBuildingName("Carnegie Mellon Univ, B23");
 
         RoomBean room1 = new RoomBean();
-        room1.setRoomId("Student Lounge");
+        room1.setName("Student Lounge");
         RoomBean room2 = new RoomBean();
-        room2.setRoomId("129A");
+        room2.setName("129A");
 
         ReservationBean reservation1 = new ReservationBean();
         reservation1.setDate("11/23/2015");

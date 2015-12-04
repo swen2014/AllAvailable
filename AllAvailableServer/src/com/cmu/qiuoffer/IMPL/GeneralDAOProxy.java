@@ -665,6 +665,7 @@ public abstract class GeneralDAOProxy implements BuildingDAO, CommentDAO,
 				reservation.setDate(rs.getString("date"));
 				reservation.setTime(rs.getString("time"));
 				reservation.setDuration(rs.getDouble("duration"));
+				reservation.setUserId(userEmail);
 				reservation.setSeatId(sb.getSeatId());
 
 				view.setBuilding(building);

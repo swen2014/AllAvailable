@@ -11,33 +11,45 @@ import java.io.Serializable;
  */
 public class SeatBean implements Serializable {
 
-    private String seatId;
-    private String name;
-    private boolean status;
+    private int seatId;
+    private boolean occupied;
     private int roomId;
+    private String name;
 
-    public String getSeatId() {
-        return seatId;
-    }
-
-    public void setSeatId(String seatId) {
-        this.seatId = seatId;
-    }
-
+    /**
+     * @return the name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * @param name the name to set
+     */
     public void setName(String name) {
         this.name = name;
     }
 
-    public boolean isStatus() {
-        return status;
+    public int getSeatId() {
+        return seatId;
     }
 
-    public void setStatus(boolean status) {
-        this.status = status;
+    public void setSeatId(int seatId) {
+        this.seatId = seatId;
+    }
+
+    /**
+     * @return the occupied
+     */
+    public boolean isOccupied() {
+        return occupied;
+    }
+
+    /**
+     * @param occupied the occupied to set
+     */
+    public void setOccupied(boolean occupied) {
+        this.occupied = occupied;
     }
 
     public int getRoomId() {
@@ -47,4 +59,5 @@ public class SeatBean implements Serializable {
     public void setRoomId(int roomId) {
         this.roomId = roomId;
     }
+
 }
