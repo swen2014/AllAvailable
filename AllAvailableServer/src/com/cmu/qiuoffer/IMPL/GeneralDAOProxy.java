@@ -632,14 +632,23 @@ public abstract class GeneralDAOProxy implements BuildingDAO, CommentDAO,
 	}
 
 	@Override
-	public List<ReservationView> getReservations(String userEmail) {
+	public List<ReservationView> getReservations(String userEmail, String date,
+			String time, boolean history) {
 		List<ReservationView> reservations = new ArrayList<ReservationView>();
 		ResultSet rs = null;
 		try {
 			conn = mysql.getConnection();
-			sql = helper.getSQLTemplate("getReservations");
+			if (history) {
+				sql = helper.getSQLTemplate("getHistoryReservations");
+			} else {
+				sql = helper.getSQLTemplate("getRecentReservations");
+			}
 			stmt = conn.prepareStatement(sql);
 			stmt.setString(1, userEmail);
+			stmt.setString(2, date);
+			stmt.setString(3, userEmail);
+			stmt.setString(4, date);
+			stmt.setString(5, time);
 			rs = stmt.executeQuery();
 			while (rs.next()) {
 				ReservationView view = new ReservationView();

@@ -20,5 +20,7 @@ public interface ReservationDAO {
 
 	public boolean cancelReservation(int reservationId);
 
-	public List<ReservationView> getReservations(String userEmail);
+	public List<ReservationView> getReservations(String userEmail, String date,
+			String time, boolean history);
+
 }
