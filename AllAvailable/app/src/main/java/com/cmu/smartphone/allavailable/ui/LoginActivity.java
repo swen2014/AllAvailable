@@ -18,6 +18,8 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -29,8 +31,23 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.cmu.smartphone.allavailable.R;
+import com.cmu.smartphone.allavailable.entities.ReservationView;
+import com.cmu.smartphone.allavailable.model.ScheduleListItem;
+import com.cmu.smartphone.allavailable.util.DateTimeHelper;
+import com.cmu.smartphone.allavailable.util.JsonHelper;
+import com.cmu.smartphone.allavailable.ws.remote.DataReceiver;
+import com.cmu.smartphone.allavailable.ws.remote.SessionControl;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import static android.Manifest.permission.READ_CONTACTS;
@@ -46,18 +63,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private static final int REQUEST_READ_CONTACTS = 0;
 
     /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world"
-    };
-    /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
     private UserLoginTask mAuthTask = null;
 
-    // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private View mProgressView;
@@ -189,7 +198,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // perform the user login attempt.
             showProgress(true);
             mAuthTask = new UserLoginTask(email, password);
-            mAuthTask.execute((Void) null);
+            String uriHost = getResources().getText(R.string.host).toString();
+            mAuthTask.execute(uriHost);
         }
     }
 
@@ -306,10 +316,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
      */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+    public class UserLoginTask extends AsyncTask<String, Void, Boolean> {
 
         private final String mEmail;
         private final String mPassword;
+        private ArrayList<ReservationView> dataResults;
 
         UserLoginTask(String email, String password) {
             mEmail = email;
@@ -317,26 +328,66 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
 
         @Override
-        protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
+        protected Boolean doInBackground(String... params) {
 
+            String response = null;
+            URL url = null;
+            boolean result = false;
             try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
-            }
-
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
+                url = new URL(params[0] + "LogIn?action=login&uid=" + mEmail + "&pwd=" + mPassword);
+                HttpURLConnection connection = (HttpURLConnection) url
+                        .openConnection();
+                connection.setConnectTimeout(3000);
+                connection.setRequestMethod("GET");
+                connection.setDoInput(true);
+                int code = connection.getResponseCode();
+                if (code == 200) {
+                    response = DataReceiver.ChangeInputStream(connection
+                            .getInputStream()).replace("\n", "");
+                    if (response != null && response.equals(mEmail)) {
+                        result = true;
+                    }
                 }
+
+                if (result) {
+                    Calendar cal = Calendar.getInstance();
+                    Date time = cal.getTime();
+
+                    CharSequence dateChar = DateFormat.format("MMM dd, yyyy", time);
+                    CharSequence timeChar = DateFormat.format("HH:mm", time);
+                    StringBuilder sb = new StringBuilder();
+                    sb.append(params[0]);
+                    sb.append("Reservation?action=reservations&user=");
+                    sb.append(mEmail);
+                    sb.append("&date=");
+                    sb.append(dateChar.toString());
+                    sb.append("&time=");
+                    sb.append(timeChar.toString());
+                    sb.append("&history=false");
+
+                    url = new URL(sb.toString().replace(" ", "%20"));
+                    Log.v("DEBUG", url.toString());
+                    connection = (HttpURLConnection) url
+                            .openConnection();
+                    connection.setConnectTimeout(3000);
+                    connection.setRequestMethod("GET");
+                    connection.setDoInput(true);
+                    code = connection.getResponseCode();
+                    if (code == 200) {
+                        String jsonString = DataReceiver.ChangeInputStream(connection
+                                .getInputStream());
+                        dataResults = (ArrayList<ReservationView>) JsonHelper.getReservations(jsonString);
+                    }
+                }
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (ProtocolException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
 
-            // TODO: register the new account here.
-            return true;
+            return result;
         }
 
         @Override
@@ -345,8 +396,40 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(false);
 
             if (success) {
-//                finish();
+                SimpleDateFormat formatter = new SimpleDateFormat("MMM dd, yyyy");
+                ArrayList<ScheduleListItem> list = new ArrayList<>();
+                for (ReservationView reservation : dataResults) {
+                    String dateString = reservation.getReservation().getDate();
+                    String timeString = reservation.getReservation().getTime();
+                    double duration = reservation.getReservation().getDuration();
+                    try {
+                        Date date = formatter.parse(dateString);
+                        Calendar cal = Calendar.getInstance();
+                        cal.setTime(date);
+
+                        ScheduleListItem item = new ScheduleListItem();
+                        StringBuilder sb = new StringBuilder();
+                        sb.append(DateTimeHelper.getDayOfWeek(cal.get(Calendar.DAY_OF_WEEK)));
+                        sb.append(", ");
+                        sb.append(timeString);
+                        sb.append(" - ");
+                        sb.append(DateTimeHelper.addTime(timeString, duration));
+                        item.setTime(sb.toString());
+
+                        String building = reservation.getBuilding().getBuildingName().
+                                substring(reservation.getBuilding().getBuildingName().indexOf(",") + 2);
+                        item.setPlace(building + ", " + reservation.getRoom().getName());
+                        list.add(item);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                SessionControl session = SessionControl.getInstance();
+                session.createUserSession(LoginActivity.this, mEmail);
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                intent.putExtra("reservations", dataResults);
+                intent.putExtra("schedules", list);
                 startActivity(intent);
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));

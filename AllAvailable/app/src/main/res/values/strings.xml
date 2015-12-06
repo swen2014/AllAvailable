@@ -13,6 +13,10 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+
+    <string name="welcome">Welcome to AllAvailable!</string>
+    <string name="first_hint">Let\'s reserve your study space</string>
+
     <string name="action_new_schedule">Create New Schedule</string>
     <string name="action_view_history">View History</string>
     <string name="action_call_admin">Call Administrator</string>

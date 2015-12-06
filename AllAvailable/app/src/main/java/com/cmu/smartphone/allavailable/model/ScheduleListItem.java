@@ -1,9 +1,11 @@
 package com.cmu.smartphone.allavailable.model;
 
+import java.io.Serializable;
+
 /**
  * Created by wangxi on 11/6/15.
  */
-public class ScheduleListItem {
+public class ScheduleListItem implements Serializable {
     private String time;
     private String place;
 

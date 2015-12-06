@@ -45,7 +45,7 @@ public class DateTimeHelper {
 		Calendar cal2 = Calendar.getInstance();
 		cal2.setTimeInMillis(newTime);
 
-		SimpleDateFormat formatter = new SimpleDateFormat("hh:mm");
+		SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
 		return formatter.format(cal2.getTime());
 	}
 }

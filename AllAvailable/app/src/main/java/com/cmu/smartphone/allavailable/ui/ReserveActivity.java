@@ -63,9 +63,9 @@ public class ReserveActivity extends AppCompatActivity {
         Calendar calendar = Calendar.getInstance();
         Date time = calendar.getTime();
 
-        CharSequence dateChar = DateFormat.format("  MMM  dd, yyyy ", time);
+        CharSequence dateChar = DateFormat.format("  MMM dd, yyyy ", time);
         dateButton.setText(dateChar);
-        CharSequence timeChar = DateFormat.format("  hh:mm", time);
+        CharSequence timeChar = DateFormat.format("  HH:mm", time);
         timeButton.setText(timeChar);
 
         dateButton.setOnClickListener(new View.OnClickListener() {
