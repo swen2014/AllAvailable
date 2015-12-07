@@ -29,6 +29,7 @@
     <string name="time">Time:</string>
     <string name="period">Period:</string>
     <string name="confirm">Confirm</string>
+    <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="reschedule">reschedule</string>
 
@@ -39,5 +40,11 @@
     <string name="done">Done</string>
     <string name="histories">Histories:</string>
 
+    <string name="reschedule_dialog_message">To reschedule, this reservation will be removed?</string>
+    <string name="dialog_title">Cancel this reservation</string>
+    <string name="cancel_dialog_message">Do you really want to remove this reservation?</string>
+
     <string name="host">http://172.29.93.237:8080/AllAvailableServer/</string>
+    <!--<string name="host">http://[2601:647:4001:c8c2:82e6:50ff:fe02:198e]:8080/AllAvailableServer/</string>-->
+
 </resources>

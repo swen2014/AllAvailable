@@ -409,7 +409,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                         ScheduleListItem item = new ScheduleListItem();
                         StringBuilder sb = new StringBuilder();
-                        sb.append(DateTimeHelper.getDayOfWeek(cal.get(Calendar.DAY_OF_WEEK)));
+                        sb.append(DateTimeHelper.getDayOfWeek(cal.get(Calendar.DAY_OF_WEEK)-1));
                         sb.append(", ");
                         sb.append(timeString);
                         sb.append(" - ");

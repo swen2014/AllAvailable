@@ -95,6 +95,13 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.CommentActivity" />
         </activity>
+        <activity
+            android:name=".ui.HistoryReserveDetailActivity"
+            android:parentActivityName=".ui.HistoryActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.CommentActivity" />
+        </activity>
     </application>
 
 </manifest>

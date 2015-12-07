@@ -743,4 +743,51 @@ public abstract class GeneralDAOProxy implements BuildingDAO, CommentDAO,
 		}
 		return occupied;
 	}
+
+	public boolean isAvailableAtTime(String email, String date, String time,
+			double duration) {
+		boolean occupied = false;
+		ResultSet rs = null;
+		try {
+			conn = mysql.getConnection();
+			sql = helper.getSQLTemplate("queryUserOccupied");
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, email);
+			stmt.setString(2, date);
+			stmt.setString(3, time);
+			System.out.println(stmt.toString());
+			rs = stmt.executeQuery();
+			if (rs.next()) {
+				String lastTime = rs.getString("time");
+				double lastDuration = rs.getDouble("duration");
+
+				occupied = DateTimeHelper.checkTimeOverlap(time, lastTime,
+						lastDuration);
+			}
+
+			if (!occupied) {
+				sql = helper.getSQLTemplate("queryUserOccupied2");
+				stmt = conn.prepareStatement(sql);
+				stmt.setString(1, email);
+				stmt.setString(2, date);
+				stmt.setString(3, time);
+				stmt.setString(4, DateTimeHelper.addTime(time, duration));
+				rs = stmt.executeQuery();
+				if (rs.next()) {
+					occupied = true;
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (conn != null && stmt != null && rs != null) {
+				try {
+					mysql.close(rs, stmt, conn);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return occupied;
+	}
 }
