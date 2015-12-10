@@ -83,6 +83,7 @@
         </activity>
         <activity
             android:name=".ui.CommentActivity"
+            android:launchMode="singleTop"
             android:parentActivityName=".ui.SeatInfoActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

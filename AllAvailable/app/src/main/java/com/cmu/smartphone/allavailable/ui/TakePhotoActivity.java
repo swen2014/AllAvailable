@@ -22,6 +22,7 @@ import com.cmu.smartphone.allavailable.ws.remote.ImageUploader;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -85,6 +86,7 @@ public class TakePhotoActivity extends AppCompatActivity {
                     Intent resultIntent = new Intent();
                     Log.v("Debug Image", photoUri + "");
                     resultIntent.putExtra(ImageUploader.RESULT_TYPE, photoUri.toString());
+//                    resultIntent.putExtra(ImageUploader.RESULT_TYPE, bitmap);
                     TakePhotoActivity.this.setResult(Activity.RESULT_OK, resultIntent);
                     TakePhotoActivity.this.finish();
                 } catch (NoImageChosenException nice) {
@@ -108,6 +110,7 @@ public class TakePhotoActivity extends AppCompatActivity {
                         throw new NoImageChosenException("Choose Image Failed!");
                     }
                     image.setImageBitmap(bitmap);
+                    storeImage(bitmap);
                 } catch (FileNotFoundException fe) {
                     fe.printStackTrace();
                 } catch (NoImageChosenException nice) {
@@ -175,5 +178,36 @@ public class TakePhotoActivity extends AppCompatActivity {
         }
 
         return mediaFile;
+    }
+
+    public boolean storeImage(Bitmap bitmap) {
+        try {
+//            File folder = new File(Environment.getExternalStorageDirectory() + "/Icon Select/");
+//            if (!folder.exists()) {
+//                folder.mkdirs();
+//            }
+//            File nomediaFile = new File(folder, ".nomedia");
+//            if (!nomediaFile.exists()) {
+//                nomediaFile.createNewFile();
+//            }
+
+            File file = getOutputMediaFile(MEDIA_TYPE_IMAGE);
+            photoUri = Uri.fromFile(file);
+
+            FileOutputStream out = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
+//            File bitmapFile = new File(file);
+
+            if (file.exists()) {
+                return true;
+            }
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.d("beewhale", "Error writing data");
+        }
+
+        return false;
     }
 }

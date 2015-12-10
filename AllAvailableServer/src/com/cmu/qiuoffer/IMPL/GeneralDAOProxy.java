@@ -66,10 +66,10 @@ public abstract class GeneralDAOProxy implements BuildingDAO, CommentDAO,
 				cb.setCommentId(rs.getInt("commentId"));
 				cb.setContent(rs.getString("content"));
 				cb.setDate(rs.getString("date"));
-				cb.setImagePath(rs.getString("imagePath"));
-				cb.setRoomId(rs.getInt(roomId));
+				cb.setImagePath(rs.getString("image_url"));
+				cb.setRoomId(rs.getInt("roomId"));
 				cb.setTime(rs.getString("time"));
-				cb.setUserId(rs.getString("userId"));
+				cb.setUserId(rs.getString("user_email"));
 				re.add(cb);
 			}
 			return re;
@@ -107,8 +107,8 @@ public abstract class GeneralDAOProxy implements BuildingDAO, CommentDAO,
 			stmt = conn.prepareStatement(sql);
 			String[] datetime = DateTimeHelper.getDateTime().split(" ");
 			stmt.setString(1, content);
-			stmt.setString(2, datetime[0]);
-			stmt.setString(3, datetime[1]);
+			stmt.setString(2, datetime[1]);
+			stmt.setString(3, datetime[0]);
 			stmt.setString(4, userId);
 			stmt.setInt(5, roomId);
 			stmt.setString(6, pic);

@@ -7,7 +7,7 @@ import java.util.Date;
 
 public class DateTimeHelper {
 	public static String getDateTime() {
-		DateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
+		DateFormat df = new SimpleDateFormat("MM/dd/yy HH:mm");
 		return df.format(new Date());
 	}
 

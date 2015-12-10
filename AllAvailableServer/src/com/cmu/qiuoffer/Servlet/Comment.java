@@ -65,7 +65,7 @@ public class Comment extends HttpServlet {
 			if (action.equals("new")) {
 				makeComment(request, response);
 			} else if (action.equals("check")) {
-				String roomId = request.getParameter("roomid");
+				getComments(request, response);
 			} else if (action.equals("upload")) {
 				uploadImage(request, response);
 			} else if (action.equals("download")) {
@@ -83,7 +83,7 @@ public class Comment extends HttpServlet {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		doPost(request, response);
+		doGet(request, response);
 	}
 
 	private void makeComment(HttpServletRequest request,
@@ -95,7 +95,15 @@ public class Comment extends HttpServlet {
 		String content = request.getParameter("content");
 		String picName = request.getParameter("pic");
 
-		String pic = sc.getRealPath("/ImageResources/" + picName);
+		String pic = null;
+		if (picName.equals("null")) {
+			pic = "N/A";
+		} else {
+			if (!picName.endsWith(".jpg")) {
+				picName = picName + ".jpg";
+			}
+			pic = sc.getRealPath("/ImageResources/" + picName);
+		}
 
 		boolean success = commentDao.makeComment(userId, roomId, content, pic);
 		if (success) {
@@ -131,7 +139,10 @@ public class Comment extends HttpServlet {
 			byte[] decode = Base64.decode(photo);
 			String dir = sc.getRealPath("/ImageResources/");
 			System.out.println(dir);
-			File file = new File(dir + name + ".jpg");
+			if (!name.endsWith(".jpg")) {
+				name = name + ".jpg";
+			}
+			File file = new File(dir + name);
 			System.out.println(file.getName());
 			if (!file.exists()) {
 				file.createNewFile();

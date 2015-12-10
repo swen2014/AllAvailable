@@ -3,6 +3,7 @@ package com.cmu.smartphone.allavailable.ws.remote;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Base64;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -27,7 +28,7 @@ public class ImageUploader {
     public void uploadImage(Bitmap bitmap, String url, String eventName) {
         try {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 20, out);
             out.flush();
             out.close();
             byte[] buffer = out.toByteArray();
@@ -36,11 +37,12 @@ public class ImageUploader {
             String photo = new String(encode);
 
             RequestParams params = new RequestParams();
-            params.put("CommentOperation", "uploadimage");
+            params.put("action", "upload");
             params.put("name", eventName);
             params.put("photo", photo);
 
             AsyncHttpClient client = new AsyncHttpClient();
+            Log.v("photo", url);
             client.post(url, params, new AsyncHttpResponseHandler() {
 
 

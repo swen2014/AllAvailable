@@ -64,6 +64,7 @@ public class HistoryItemAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, CommentActivity.class);
+                intent.putExtra("room", reservationView.getRoom());
                 intent.putExtra("roomId", reservationView.getRoom().getRoomId());
                 intent.putExtra("buildingId", reservationView.getBuilding().getBuildingId());
                 context.startActivity(intent);

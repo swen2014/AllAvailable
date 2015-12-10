@@ -25,7 +25,7 @@ public class CommentListAdapter extends BaseAdapter {
     private TextView commentInfo;
     private TextView commentTitle;
 
-    public CommentListAdapter (Context context, List<CommentBean> lists) {
+    public CommentListAdapter(Context context, List<CommentBean> lists) {
         this.context = context;
         this.lists = lists;
         layoutInflater = LayoutInflater.from(context);
@@ -57,7 +57,7 @@ public class CommentListAdapter extends BaseAdapter {
         commentTitle = (TextView) convertView.findViewById(R.id.comment_title);
         CommentBean comment = lists.get(position);
 
-        if (comment.getImagePath() == null || comment.getImagePath().equals("")) {
+        if (comment.getImagePath() == null || comment.getImagePath().equals("N/A")) {
             commentIcon.setVisibility(View.INVISIBLE);
         } else {
             commentIcon.setVisibility(View.VISIBLE);

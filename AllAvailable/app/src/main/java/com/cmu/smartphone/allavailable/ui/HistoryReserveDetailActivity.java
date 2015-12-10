@@ -75,6 +75,7 @@ public class HistoryReserveDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(HistoryReserveDetailActivity.this, CommentActivity.class);
+                intent.putExtra("room", reservation.getRoom());
                 startActivity(intent);
             }
         });

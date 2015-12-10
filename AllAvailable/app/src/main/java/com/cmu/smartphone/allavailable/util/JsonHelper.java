@@ -3,6 +3,7 @@ package com.cmu.smartphone.allavailable.util;
 import android.util.Log;
 
 import com.cmu.smartphone.allavailable.entities.BuildingBean;
+import com.cmu.smartphone.allavailable.entities.CommentBean;
 import com.cmu.smartphone.allavailable.entities.ReservationBean;
 import com.cmu.smartphone.allavailable.entities.ReservationView;
 import com.cmu.smartphone.allavailable.entities.RoomBean;
@@ -132,5 +133,28 @@ public class JsonHelper {
             e.printStackTrace();
         }
         return reservations;
+    }
+
+    public static List<CommentBean> getComments(String jsonString) {
+        List<CommentBean> list = new ArrayList<>();
+        try {
+            JSONArray jsonArray = new JSONArray(jsonString);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject commentJsonObject = jsonArray.getJSONObject(i);
+                CommentBean commentBean = new CommentBean();
+                commentBean.setUserId(commentJsonObject.getString("userId"));
+                commentBean.setContent(commentJsonObject.getString("content"));
+                commentBean.setImagePath(commentJsonObject.getString("imagePath"));
+                commentBean.setTime(commentJsonObject.getString("time"));
+                commentBean.setDate(commentJsonObject.getString("date"));
+                commentBean.setCommentId(commentJsonObject.getInt("commentId"));
+                commentBean.setRoomId(commentJsonObject.getInt("roomId"));
+
+                list.add(commentBean);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return list;
     }
 }

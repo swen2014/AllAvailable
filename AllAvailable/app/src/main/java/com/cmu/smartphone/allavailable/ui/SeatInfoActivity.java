@@ -87,6 +87,7 @@ public class SeatInfoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(SeatInfoActivity.this, CommentActivity.class);
+                intent.putExtra("room", currentRoom);
                 startActivity(intent);
             }
         });
