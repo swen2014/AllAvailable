@@ -13,10 +13,22 @@ import android.widget.LinearLayout;
 
 import com.cmu.smartphone.allavailable.R;
 
+/**
+ * The dialog to show the image
+ *
+ * @author Xi Wang
+ * @version 1.0
+ */
 public class TransparentProgressDialog extends Dialog {
 
     private ImageView iv;
 
+    /**
+     * Constructor
+     *
+     * @param context
+     * @param resourceIdOfImage
+     */
     public TransparentProgressDialog(Context context, int resourceIdOfImage) {
         super(context, R.style.TransparentProgressDialog);
         WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
@@ -40,6 +52,9 @@ public class TransparentProgressDialog extends Dialog {
         addContentView(layout, params);
     }
 
+    /**
+     * Show the dialog
+     */
     @Override
     public void show() {
         super.show();

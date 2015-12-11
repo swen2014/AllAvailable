@@ -15,16 +15,14 @@ import android.widget.ListView;
 
 import com.cmu.smartphone.allavailable.R;
 import com.cmu.smartphone.allavailable.adapter.HistoryItemAdapter;
-import com.cmu.smartphone.allavailable.entities.BuildingBean;
-import com.cmu.smartphone.allavailable.entities.ReservationBean;
 import com.cmu.smartphone.allavailable.entities.ReservationView;
-import com.cmu.smartphone.allavailable.entities.RoomBean;
 import com.cmu.smartphone.allavailable.exception.NetworkException;
 import com.cmu.smartphone.allavailable.model.ScheduleListItem;
 import com.cmu.smartphone.allavailable.util.DateTimeHelper;
 import com.cmu.smartphone.allavailable.util.JsonHelper;
 import com.cmu.smartphone.allavailable.ws.remote.DataArrivedHandler;
 import com.cmu.smartphone.allavailable.ws.remote.DataReceiver;
+import com.cmu.smartphone.allavailable.ws.remote.ServerConnectionTask;
 import com.cmu.smartphone.allavailable.ws.remote.SessionControl;
 
 import java.io.IOException;
@@ -38,6 +36,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * The history page
+ *
+ * @author Xi Wang
+ * @version 1.0
+ */
 public class HistoryActivity extends AppCompatActivity {
 
     private ListView historyList;
@@ -45,6 +49,11 @@ public class HistoryActivity extends AppCompatActivity {
 
     private DataArrivedHandler handler;
 
+    /**
+     * The override onCreate method
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +62,8 @@ public class HistoryActivity extends AppCompatActivity {
         SessionControl session = SessionControl.getInstance();
         String user = session.getUserSession(this);
 
-        String hostAPI = getResources().getText(R.string.host).toString();
+//        String hostAPI = getResources().getText(R.string.host).toString();
+        String hostAPI = session.getHostIp(this);
 
         new connectHistories().execute(hostAPI, user);
 
@@ -123,41 +133,16 @@ public class HistoryActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private List<ReservationView> generateFakeData() {
-        // Remove this fake data later
-        BuildingBean building = new BuildingBean();
-        building.setBuildingName("Carnegie Mellon Univ, B23");
-
-        RoomBean room1 = new RoomBean();
-        room1.setName("Student Lounge");
-        RoomBean room2 = new RoomBean();
-        room2.setName("129A");
-
-        ReservationBean reservation1 = new ReservationBean();
-        reservation1.setDate("11/23/2015");
-        reservation1.setTime("15:30");
-        ReservationBean reservation2 = new ReservationBean();
-        reservation2.setDate("11/25/2015");
-        reservation2.setTime("09:00");
-
-        ReservationView reservationView1 = new ReservationView();
-        reservationView1.setBuilding(building);
-        reservationView1.setRoom(room1);
-        reservationView1.setReservation(reservation1);
-
-        ReservationView reservationView2 = new ReservationView();
-        reservationView2.setBuilding(building);
-        reservationView2.setRoom(room2);
-        reservationView2.setReservation(reservation2);
-
-        List<ReservationView> list = new ArrayList<ReservationView>();
-        list.add(reservationView1);
-        list.add(reservationView2);
-
-        return list;
-    }
-
-    public class connectHistories extends AsyncTask<String, Integer, List<ReservationView>> {
+    /**
+     * The task to request history items
+     */
+    public class connectHistories extends AsyncTask<String, Integer, List<ReservationView>>
+            implements ServerConnectionTask {
+        /**
+         * Override onPostExecute method
+         *
+         * @param result
+         */
         @Override
         protected void onPostExecute(List<ReservationView> result) {
             super.onPostExecute(result);
@@ -175,6 +160,12 @@ public class HistoryActivity extends AppCompatActivity {
             }
         }
 
+        /**
+         * Override doInBackground method
+         *
+         * @param arg0
+         * @return
+         */
         @Override
         protected List<ReservationView> doInBackground(String... arg0) {
             ArrayList<ReservationView> tmpReservations = null;

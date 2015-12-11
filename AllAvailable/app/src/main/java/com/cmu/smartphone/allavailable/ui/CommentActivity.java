@@ -35,10 +35,11 @@ import com.cmu.smartphone.allavailable.exception.NetworkException;
 import com.cmu.smartphone.allavailable.util.JsonHelper;
 import com.cmu.smartphone.allavailable.ws.remote.DataArrivedHandler;
 import com.cmu.smartphone.allavailable.ws.remote.DataReceiver;
+import com.cmu.smartphone.allavailable.ws.remote.ImageDownloader;
 import com.cmu.smartphone.allavailable.ws.remote.ImageUploader;
+import com.cmu.smartphone.allavailable.ws.remote.ServerConnectionTask;
 import com.cmu.smartphone.allavailable.ws.remote.SessionControl;
 
-import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -48,6 +49,12 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The comment page
+ *
+ * @author Xi Wang
+ * @version 1.0
+ */
 public class CommentActivity extends AppCompatActivity {
 
     private static final int ASK_PHOTOS = 1;
@@ -66,6 +73,11 @@ public class CommentActivity extends AppCompatActivity {
 
     private TransparentProgressDialog progress;
 
+    /**
+     * The override onCreate function
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,7 +88,8 @@ public class CommentActivity extends AppCompatActivity {
 
         SessionControl session = SessionControl.getInstance();
         final String user = session.getUserSession(this);
-        final String uriHost = getResources().getText(R.string.host).toString();
+//        final String uriHost = getResources().getText(R.string.host).toString();
+        final String uriHost = session.getHostIp(this);
 
         new GetCommentAsyncTask().execute(uriHost, room.getRoomId() + "");
 
@@ -161,6 +174,13 @@ public class CommentActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Override the onActivityResult method
+     *
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == ASK_PHOTOS) { // Please, use a final int instead of hardcoded int value
@@ -174,6 +194,11 @@ public class CommentActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Show the comment image
+     *
+     * @param bitmap the image
+     */
     private void showImageDialog(Bitmap bitmap) {
         // Get screen size
         Display display = this.getWindowManager().getDefaultDisplay();
@@ -182,10 +207,7 @@ public class CommentActivity extends AppCompatActivity {
         int screenWidth = size.x;
         int screenHeight = size.y;
 
-//        // Get target image size
-//        ContentResolver cr = this.getContentResolver();
-//        Bitmap bitmap = null;
-//            bitmap = BitmapFactory.decodeStream(cr.openInputStream(Uri.parse(uri)));
+        // Get target image size
 
         int bitmapHeight = bitmap.getHeight();
         int bitmapWidth = bitmap.getWidth();
@@ -218,8 +240,11 @@ public class CommentActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * The task to create a comment
+     */
     public class CreateCommentAsyncTask extends
-            AsyncTask<String, Integer, ArrayList<CommentBean>> {
+            AsyncTask<String, Integer, ArrayList<CommentBean>> implements ServerConnectionTask {
 
 
         /*
@@ -234,6 +259,11 @@ public class CommentActivity extends AppCompatActivity {
             super.onPreExecute();
         }
 
+        /*
+         * (non-Javadoc)
+         *
+         * @see android.os.AsyncTask#onPostExecute()
+         */
         @Override
         protected void onPostExecute(ArrayList<CommentBean> result) {
             try {
@@ -312,8 +342,11 @@ public class CommentActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * The task to get the comment
+     */
     public class GetCommentAsyncTask extends
-            AsyncTask<String, Integer, ArrayList<CommentBean>> {
+            AsyncTask<String, Integer, ArrayList<CommentBean>> implements ServerConnectionTask {
 
 
         /*
@@ -328,6 +361,11 @@ public class CommentActivity extends AppCompatActivity {
             super.onPreExecute();
         }
 
+        /*
+         * (non-Javadoc)
+         *
+         * @see android.os.AsyncTask#onPostExecute()
+         */
         @Override
         protected void onPostExecute(ArrayList<CommentBean> result) {
             try {
@@ -390,8 +428,8 @@ public class CommentActivity extends AppCompatActivity {
     /**
      * The specific thread to get image
      *
-     * @author Brandon
-     * @version 1.0 2015-12-07
+     * @author Xi Wang
+     * @version 1.0
      */
     public class GetImageAsyncTask extends AsyncTask<String, Integer, byte[]> {
 
@@ -450,7 +488,8 @@ public class CommentActivity extends AppCompatActivity {
                 int code = connection.getResponseCode();
                 if (code == 200) {
                     in = connection.getInputStream();
-                    result = readStream(in);
+                    ImageDownloader downloader = new ImageDownloader();
+                    result = downloader.readStream(in);
                 }
             } catch (MalformedURLException e) {
                 e.printStackTrace();
@@ -468,26 +507,6 @@ public class CommentActivity extends AppCompatActivity {
                 }
             }
             return result;
-        }
-
-
-        /**
-         * Read Image Stream
-         *
-         * @param in
-         * @return
-         * @throws Exception
-         */
-        public byte[] readStream(InputStream in) throws Exception {
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            byte[] buffer = new byte[1024];
-            int len = -1;
-            while ((len = in.read(buffer)) != -1) {
-                outputStream.write(buffer, 0, len);
-            }
-            outputStream.close();
-            in.close();
-            return outputStream.toByteArray();
         }
 
 

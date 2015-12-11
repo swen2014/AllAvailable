@@ -29,6 +29,7 @@ import com.cmu.smartphone.allavailable.model.ScheduleListItem;
 import com.cmu.smartphone.allavailable.util.DateTimeHelper;
 import com.cmu.smartphone.allavailable.util.JsonHelper;
 import com.cmu.smartphone.allavailable.ws.remote.DataReceiver;
+import com.cmu.smartphone.allavailable.ws.remote.ServerConnectionTask;
 import com.cmu.smartphone.allavailable.ws.remote.SessionControl;
 
 import java.io.IOException;
@@ -41,6 +42,12 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+/**
+ * The reserve page
+ *
+ * @author Xi Wang
+ * @version 1.0
+ */
 public class ReserveActivity extends AppCompatActivity {
 
     private Button dateButton;
@@ -139,7 +146,8 @@ public class ReserveActivity extends AppCompatActivity {
                     SessionControl session = SessionControl.getInstance();
                     String user = session.getUserSession(ReserveActivity.this);
 
-                    String uriHost = getResources().getText(R.string.host).toString();
+//                    String uriHost = getResources().getText(R.string.host).toString();
+                    String uriHost = session.getHostIp(ReserveActivity.this);
 
                     new CreateReservationAsyncTask().execute(uriHost, user, seat.getSeatId() + "",
                             date, time, duration + "");
@@ -150,12 +158,22 @@ public class ReserveActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Show the dialog to choose the time
+     *
+     * @param v
+     */
     public void showTimePickerDialog(View v) {
         DialogFragment newFragment = new TimePickerFragment();
         ((TimePickerFragment) newFragment).setParentTimeButton(timeButton);
         newFragment.show(getSupportFragmentManager(), "timePicker");
     }
 
+    /**
+     * Show the dialog to choose the date
+     *
+     * @param v
+     */
     public void showDatePickerDialog(View v) {
         DialogFragment newFragment = new DatePickerFragment();
         ((DatePickerFragment) newFragment).setParentDateButton(dateButton);
@@ -181,6 +199,14 @@ public class ReserveActivity extends AppCompatActivity {
         timeButton.setText(selectedTime);
     }
 
+    /**
+     * Validate the request parameters
+     *
+     * @param date
+     * @param time
+     * @param duration
+     * @return whether the request parameters are valid
+     */
     private boolean validateRequest(String date, String time, double duration) {
 
         String endTime = DateTimeHelper.addTime(time, duration);
@@ -197,8 +223,11 @@ public class ReserveActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * The task to create the reservation
+     */
     public class CreateReservationAsyncTask extends
-            AsyncTask<String, Integer, String> {
+            AsyncTask<String, Integer, String> implements ServerConnectionTask {
 
         private static final String OCCUPIED_STATUS = "Occupied\n";
         private static final String OK_STATUS = "OK\n";
@@ -213,10 +242,14 @@ public class ReserveActivity extends AppCompatActivity {
         @Override
 
         protected void onPreExecute() {
-            // TODO Auto-generated method stub
             super.onPreExecute();
         }
 
+        /**
+         * Override the onPostExecute method
+         *
+         * @param result
+         */
         @Override
         protected void onPostExecute(String result) {
             progress.dismiss();

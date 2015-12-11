@@ -1,11 +1,32 @@
 package com.cmu.smartphone.allavailable.ws.remote;
 
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+
 /**
- * Created by wangxi on 11/13/15.
+ * The tool to download the image
+ *
+ * @author Xi Wang
+ * @version 1.0
  */
 public class ImageDownloader {
 
-    public void downloadImage(String onlinePath) {
-
+    /**
+     * Read Image Stream
+     *
+     * @param in
+     * @return
+     * @throws Exception
+     */
+    public byte[] readStream(InputStream in) throws Exception {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        byte[] buffer = new byte[1024];
+        int len = -1;
+        while ((len = in.read(buffer)) != -1) {
+            outputStream.write(buffer, 0, len);
+        }
+        outputStream.close();
+        in.close();
+        return outputStream.toByteArray();
     }
 }

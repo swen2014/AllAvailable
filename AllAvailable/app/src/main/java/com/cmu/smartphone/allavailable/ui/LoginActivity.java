@@ -36,6 +36,7 @@ import com.cmu.smartphone.allavailable.model.ScheduleListItem;
 import com.cmu.smartphone.allavailable.util.DateTimeHelper;
 import com.cmu.smartphone.allavailable.util.JsonHelper;
 import com.cmu.smartphone.allavailable.ws.remote.DataReceiver;
+import com.cmu.smartphone.allavailable.ws.remote.ServerConnectionTask;
 import com.cmu.smartphone.allavailable.ws.remote.SessionControl;
 
 import java.io.IOException;
@@ -53,7 +54,10 @@ import java.util.List;
 import static android.Manifest.permission.READ_CONTACTS;
 
 /**
- * A login screen that offers login via email/password.
+ * The Login Page that offers login via email/password.
+ *
+ * @author Xi Wang
+ * @version 1.0
  */
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 
@@ -73,6 +77,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private View mLoginFormView;
     private View mLogoView;
 
+    /**
+     * The override onCreate method
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -151,9 +160,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
 
     /**
-     * Attempts to sign in or register the account specified by the login form.
-     * If there are form errors (invalid email, missing fields, etc.), the
-     * errors are presented and no actual login attempt is made.
+     * Login to the server
      */
     private void attemptLogin() {
         if (mAuthTask != null) {
@@ -198,18 +205,30 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // perform the user login attempt.
             showProgress(true);
             mAuthTask = new UserLoginTask(email, password);
-            String uriHost = getResources().getText(R.string.host).toString();
+//            String uriHost = getResources().getText(R.string.host).toString();
+            SessionControl session = SessionControl.getInstance();
+            String uriHost = session.getHostIp(this);
             mAuthTask.execute(uriHost);
         }
     }
 
+    /**
+     * Check the email
+     *
+     * @param email
+     * @return
+     */
     private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
         return email.contains("@");
     }
 
+    /**
+     * Check the password
+     *
+     * @param password
+     * @return
+     */
     private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
         return password.length() > 4;
     }
 
@@ -258,6 +277,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
     }
 
+    /**
+     * Override onCreateLoader method
+     *
+     * @param i
+     * @param bundle
+     * @return
+     */
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         return new CursorLoader(this,
@@ -275,6 +301,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 ContactsContract.Contacts.Data.IS_PRIMARY + " DESC");
     }
 
+    /**
+     * Override onLoadFinished method
+     *
+     * @param cursorLoader
+     * @param cursor
+     */
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
         List<String> emails = new ArrayList<>();
@@ -287,11 +319,19 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         addEmailsToAutoComplete(emails);
     }
 
+    /**
+     * Override the onLoaderReset method
+     *
+     * @param cursorLoader
+     */
     @Override
     public void onLoaderReset(Loader<Cursor> cursorLoader) {
 
     }
 
+    /**
+     * The auto generated profile Query method
+     */
     private interface ProfileQuery {
         String[] PROJECTION = {
                 ContactsContract.CommonDataKinds.Email.ADDRESS,
@@ -313,10 +353,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the user.
+     * The task to login the server
      */
-    public class UserLoginTask extends AsyncTask<String, Void, Boolean> {
+    public class UserLoginTask extends AsyncTask<String, Void, Boolean>
+            implements ServerConnectionTask {
 
         private final String mEmail;
         private final String mPassword;
@@ -327,6 +367,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mPassword = password;
         }
 
+        /*
+        * (non-Javadoc)
+        *
+        * @see android.os.AsyncTask#doInBackground
+        */
         @Override
         protected Boolean doInBackground(String... params) {
 
@@ -390,6 +435,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             return result;
         }
 
+        /*
+        * (non-Javadoc)
+        *
+        * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
+        */
         @Override
         protected void onPostExecute(final Boolean success) {
             mAuthTask = null;
@@ -409,7 +459,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                         ScheduleListItem item = new ScheduleListItem();
                         StringBuilder sb = new StringBuilder();
-                        sb.append(DateTimeHelper.getDayOfWeek(cal.get(Calendar.DAY_OF_WEEK)-1));
+                        sb.append(DateTimeHelper.getDayOfWeek(cal.get(Calendar.DAY_OF_WEEK) - 1));
                         sb.append(", ");
                         sb.append(timeString);
                         sb.append(" - ");

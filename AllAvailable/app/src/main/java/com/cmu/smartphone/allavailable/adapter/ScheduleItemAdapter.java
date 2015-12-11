@@ -13,7 +13,10 @@ import com.cmu.smartphone.allavailable.model.ScheduleListItem;
 import java.util.List;
 
 /**
- * Created by wangxi on 11/6/15.
+ * This class fill in the item of the Schedule Item List in the Schedule page
+ *
+ * @author Xi Wang
+ * @version 1.0
  */
 public class ScheduleItemAdapter extends BaseAdapter {
 
@@ -23,27 +26,58 @@ public class ScheduleItemAdapter extends BaseAdapter {
     private TextView timeText;
     private TextView placeText;
 
+    /**
+     * Default Constructor
+     *
+     * @param context the Activity Context
+     * @param lists   the List of all schedule items
+     */
     public ScheduleItemAdapter(Context context, List<ScheduleListItem> lists) {
         this.context = context;
         this.lists = lists;
         layoutInflater = LayoutInflater.from(this.context);
     }
 
+    /**
+     * Get the count of the list
+     *
+     * @return the count of the list
+     */
     @Override
     public int getCount() {
         return lists.size();
     }
 
+    /**
+     * Get the item of the given position
+     *
+     * @param position the position number
+     * @return the item of the given position
+     */
     @Override
     public Object getItem(int position) {
         return lists.get(position);
     }
 
+    /**
+     * Get the item id of the given position
+     *
+     * @param position the position number
+     * @return the item of the given position
+     */
     @Override
     public long getItemId(int position) {
         return position;
     }
 
+    /**
+     * Get the view of the given position
+     *
+     * @param position    the position number
+     * @param convertView the convert view
+     * @param parent      the parent view
+     * @return the view of the given position
+     */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {

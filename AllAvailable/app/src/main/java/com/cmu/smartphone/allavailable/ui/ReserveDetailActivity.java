@@ -24,6 +24,7 @@ import com.cmu.smartphone.allavailable.model.ScheduleListItem;
 import com.cmu.smartphone.allavailable.util.DateTimeHelper;
 import com.cmu.smartphone.allavailable.util.JsonHelper;
 import com.cmu.smartphone.allavailable.ws.remote.DataReceiver;
+import com.cmu.smartphone.allavailable.ws.remote.ServerConnectionTask;
 import com.cmu.smartphone.allavailable.ws.remote.SessionControl;
 
 import java.io.IOException;
@@ -36,6 +37,12 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+/**
+ * The reservation detail page
+ *
+ * @author Xi Wang
+ * @version 1.0
+ */
 public class ReserveDetailActivity extends AppCompatActivity {
 
     private Button rescheduleButton;
@@ -98,7 +105,8 @@ public class ReserveDetailActivity extends AppCompatActivity {
         SessionControl session = SessionControl.getInstance();
         final String user = session.getUserSession(this);
 
-        final String uriHost = getResources().getText(R.string.host).toString();
+//        final String uriHost = getResources().getText(R.string.host).toString();
+        final String uriHost = session.getHostIp(this);
 
         rescheduleButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -175,7 +183,7 @@ public class ReserveDetailActivity extends AppCompatActivity {
     }
 
     public class CancelReservationAsyncTask extends
-            AsyncTask<String, Integer, ArrayList<ReservationView>> {
+            AsyncTask<String, Integer, ArrayList<ReservationView>> implements ServerConnectionTask {
 
         private boolean isReschedule;
 
@@ -195,6 +203,11 @@ public class ReserveDetailActivity extends AppCompatActivity {
             super.onPreExecute();
         }
 
+        /*
+         * (non-Javadoc)
+         *
+         * @see android.os.AsyncTask#onPreExecute()
+         */
         @Override
         protected void onPostExecute(ArrayList<ReservationView> result) {
             progress.dismiss();

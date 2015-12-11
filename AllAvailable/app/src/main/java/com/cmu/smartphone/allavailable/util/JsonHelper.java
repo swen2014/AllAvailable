@@ -17,10 +17,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by wangxi on 12/3/15.
+ * The tool to parse the json
+ *
+ * @author Xi Wang
+ * @version 1.0
  */
 public class JsonHelper {
 
+    /**
+     * Parse the building object
+     *
+     * @param jsonString
+     * @return the building
+     */
     public static List<BuildingBean> getBuildings(
             String jsonString) {
 
@@ -43,6 +52,12 @@ public class JsonHelper {
         return buildings;
     }
 
+    /**
+     * Parse the room object
+     *
+     * @param jsonString
+     * @return the room
+     */
     public static List<RoomBean> getRooms(String jsonString) {
         ArrayList<RoomBean> rooms = new ArrayList<>();
         try {
@@ -65,6 +80,12 @@ public class JsonHelper {
         return rooms;
     }
 
+    /**
+     * Parse the seat object
+     *
+     * @param jsonString
+     * @return the seat
+     */
     public static List<SeatBean> getSeats(String jsonString) {
         ArrayList<SeatBean> seats = new ArrayList<>();
         try {
@@ -84,6 +105,12 @@ public class JsonHelper {
         return seats;
     }
 
+    /**
+     * Parse the reservation object
+     *
+     * @param jsonString
+     * @return the reservation
+     */
     public static List<ReservationView> getReservations(String jsonString) {
         ArrayList<ReservationView> reservations = new ArrayList<>();
         try {
@@ -135,6 +162,12 @@ public class JsonHelper {
         return reservations;
     }
 
+    /**
+     * Parse the comment object
+     *
+     * @param jsonString
+     * @return the comment
+     */
     public static List<CommentBean> getComments(String jsonString) {
         List<CommentBean> list = new ArrayList<>();
         try {

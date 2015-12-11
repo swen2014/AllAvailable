@@ -4,14 +4,14 @@ import android.content.Context;
 import android.widget.Toast;
 
 /**
- * The exception to handle the network problem
+ * The exception to handle the ip problem
  *
  * @author Xi Wang
  * @version 1.0
  */
-public class NetworkException extends Exception {
+public class IPException extends Exception {
 
-    String message = "Network Problem";
+    String message = "The input IP address is invalid";
 
     /**
      * Fix the exception

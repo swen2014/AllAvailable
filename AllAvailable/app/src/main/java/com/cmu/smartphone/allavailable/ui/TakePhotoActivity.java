@@ -26,6 +26,12 @@ import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * Choose image page
+ *
+ * @author Xi Wang
+ * @version 1.0
+ */
 public class TakePhotoActivity extends AppCompatActivity {
 
     private static final int PHOTO_REQUEST_GALLERY = 100;
@@ -39,6 +45,11 @@ public class TakePhotoActivity extends AppCompatActivity {
     private Bitmap bitmap;
     private Uri photoUri;
 
+    /**
+     * Override the onCreate Page
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,6 +107,13 @@ public class TakePhotoActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Override the onActivityResult method
+     *
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         ContentResolver cr = this.getContentResolver();
@@ -180,23 +198,19 @@ public class TakePhotoActivity extends AppCompatActivity {
         return mediaFile;
     }
 
+    /**
+     * Store the image temporary
+     *
+     * @param bitmap the image
+     * @return whether the storage succeed
+     */
     public boolean storeImage(Bitmap bitmap) {
         try {
-//            File folder = new File(Environment.getExternalStorageDirectory() + "/Icon Select/");
-//            if (!folder.exists()) {
-//                folder.mkdirs();
-//            }
-//            File nomediaFile = new File(folder, ".nomedia");
-//            if (!nomediaFile.exists()) {
-//                nomediaFile.createNewFile();
-//            }
-
             File file = getOutputMediaFile(MEDIA_TYPE_IMAGE);
             photoUri = Uri.fromFile(file);
 
             FileOutputStream out = new FileOutputStream(file);
             bitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
-//            File bitmapFile = new File(file);
 
             if (file.exists()) {
                 return true;
@@ -205,7 +219,6 @@ public class TakePhotoActivity extends AppCompatActivity {
 
         } catch (Exception e) {
             e.printStackTrace();
-            Log.d("beewhale", "Error writing data");
         }
 
         return false;

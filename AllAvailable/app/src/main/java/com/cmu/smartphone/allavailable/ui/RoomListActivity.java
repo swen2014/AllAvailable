@@ -22,6 +22,8 @@ import com.cmu.smartphone.allavailable.exception.NetworkException;
 import com.cmu.smartphone.allavailable.util.JsonHelper;
 import com.cmu.smartphone.allavailable.ws.remote.DataArrivedHandler;
 import com.cmu.smartphone.allavailable.ws.remote.DataReceiver;
+import com.cmu.smartphone.allavailable.ws.remote.ServerConnectionTask;
+import com.cmu.smartphone.allavailable.ws.remote.SessionControl;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -31,7 +33,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-
+/**
+ * The Room List page
+ *
+ * @author Xi Wang
+ * @version 1.0
+ */
 public class RoomListActivity extends AppCompatActivity {
 
     private ListView roomListView;
@@ -41,6 +48,11 @@ public class RoomListActivity extends AppCompatActivity {
     private List<RoomBean> roomResults;
     private BuildingBean building;
 
+    /**
+     * The override onCreate method
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +61,10 @@ public class RoomListActivity extends AppCompatActivity {
         Intent intent = getIntent();
         building = (BuildingBean) intent.getSerializableExtra("building");
 
-        String uriAPI = getResources().getText(R.string.host)
+        SessionControl session = SessionControl.getInstance();
+
+//        String uriAPI = getResources().getText(R.string.host)
+        String uriAPI = session.getHostIp(this)
                 + "SeatOperation?action=rooms&bId=" + building.getBuildingId();
         Log.v("DEBUG", uriAPI);
         new connectRooms().execute(uriAPI);
@@ -93,7 +108,16 @@ public class RoomListActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public class connectRooms extends AsyncTask<String, Integer, List<RoomBean>> {
+    /**
+     * The task to request the room list
+     */
+    public class connectRooms extends AsyncTask<String, Integer, List<RoomBean>>
+            implements ServerConnectionTask {
+        /**
+         * Override the onPostExecute method
+         *
+         * @param result
+         */
         @Override
         protected void onPostExecute(List<RoomBean> result) {
             super.onPostExecute(result);
@@ -119,6 +143,12 @@ public class RoomListActivity extends AppCompatActivity {
             }
         }
 
+        /**
+         * Override the doInBackground method
+         *
+         * @param arg0
+         * @return
+         */
         @Override
         protected List<RoomBean> doInBackground(String... arg0) {
             ArrayList<RoomBean> tmpRooms = null;

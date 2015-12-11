@@ -16,6 +16,12 @@ import com.cmu.smartphone.allavailable.entities.RoomBean;
 import com.cmu.smartphone.allavailable.model.ScheduleListItem;
 import com.cmu.smartphone.allavailable.util.DateTimeHelper;
 
+/**
+ * The history detail page
+ *
+ * @author Xi Wang
+ * @version 1.0
+ */
 public class HistoryReserveDetailActivity extends AppCompatActivity {
 
     private Button commentButton;
@@ -28,6 +34,11 @@ public class HistoryReserveDetailActivity extends AppCompatActivity {
     private ReservationView reservation;
     private ScheduleListItem item;
 
+    /**
+     * The override onCreate method
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -13,15 +13,32 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+/**
+ * The Fragment to handle the date chosen
+ *
+ * @author Xi Wang, Dudaxi Huang
+ * @version 1.0
+ */
 public class DatePickerFragment extends DialogFragment
         implements DatePickerDialog.OnDateSetListener {
 
     private Button parentDateButton;
 
+    /**
+     * Set the parent button
+     *
+     * @param parentDateButton
+     */
     public void setParentDateButton(Button parentDateButton) {
         this.parentDateButton = parentDateButton;
     }
 
+    /**
+     * Override the dialog creation
+     *
+     * @param savedInstanceState
+     * @return the created dialog
+     */
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the current date as the default date in the picker
@@ -36,13 +53,27 @@ public class DatePickerFragment extends DialogFragment
         return datePickerDialog;
     }
 
+    /**
+     * Handle the action to set date
+     *
+     * @param view
+     * @param year
+     * @param month
+     * @param day
+     */
     public void onDateSet(DatePicker view, int year, int month, int day) {
         // Do something with the date chosen by the user
-        String displayValue = numTomon(padding_str(month+1) + "/" + padding_str(day) + "/" + padding_str(year));
+        String displayValue = numTomon(padding_str(month + 1) + "/" + padding_str(day) + "/" + padding_str(year));
 
         parentDateButton.setText(displayValue);
     }
 
+    /**
+     * Padding the zero to the string
+     *
+     * @param c
+     * @return the string with front padding zero
+     */
     private static String padding_str(int c) {
         if (c >= 10)
             return String.valueOf(c);
@@ -50,7 +81,13 @@ public class DatePickerFragment extends DialogFragment
             return "0" + String.valueOf(c);
     }
 
-    private static String numTomon(String inputDate){
+    /**
+     * Number to Month transfer
+     *
+     * @param inputDate the input date
+     * @return the month string
+     */
+    private static String numTomon(String inputDate) {
         Date dt = null;
         SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
         try {

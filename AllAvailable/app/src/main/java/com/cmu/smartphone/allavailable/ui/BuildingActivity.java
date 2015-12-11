@@ -20,6 +20,8 @@ import com.cmu.smartphone.allavailable.exception.NetworkException;
 import com.cmu.smartphone.allavailable.util.JsonHelper;
 import com.cmu.smartphone.allavailable.ws.remote.DataArrivedHandler;
 import com.cmu.smartphone.allavailable.ws.remote.DataReceiver;
+import com.cmu.smartphone.allavailable.ws.remote.ServerConnectionTask;
+import com.cmu.smartphone.allavailable.ws.remote.SessionControl;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -29,6 +31,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * The building list page
+ *
+ * @author Xi Wang
+ * @version 1.0
+ */
 public class BuildingActivity extends AppCompatActivity {
 
     private ListView buildingListView;
@@ -36,12 +44,20 @@ public class BuildingActivity extends AppCompatActivity {
     private DataArrivedHandler handler;
     private List<BuildingBean> buildingResults;
 
+    /**
+     * The override the onCreate function
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_building);
 
-        String uriAPI = getResources().getText(R.string.host)
+        SessionControl session = SessionControl.getInstance();
+
+//        String uriAPI = getResources().getText(R.string.host)
+        String uriAPI = session.getHostIp(this)
                 + "SeatOperation?action=buildings";
         Log.v("DEBUG", uriAPI);
         new connectBuildings().execute(uriAPI);
@@ -84,7 +100,11 @@ public class BuildingActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public class connectBuildings extends AsyncTask<String, Integer, List<BuildingBean>> {
+    /**
+     * The task to connect the server and ask for building object
+     */
+    public class connectBuildings extends AsyncTask<String, Integer, List<BuildingBean>>
+            implements ServerConnectionTask {
         @Override
         protected void onPostExecute(List<BuildingBean> result) {
             // TODO Auto-generated method stub
@@ -111,6 +131,12 @@ public class BuildingActivity extends AppCompatActivity {
             }
         }
 
+        /**
+         * Override the doInBackground function
+         *
+         * @param arg0
+         * @return
+         */
         @Override
         protected List<BuildingBean> doInBackground(String... arg0) {
             ArrayList<BuildingBean> tmpBuildings = null;

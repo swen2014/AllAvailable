@@ -4,7 +4,10 @@ import android.content.Context;
 import android.widget.Toast;
 
 /**
- * Created by wangxi on 12/6/15.
+ * The exception to handle the reservation validation error
+ *
+ * @author Xi Wang
+ * @version 1.0
  */
 public class ReservationValidateException extends Exception {
 

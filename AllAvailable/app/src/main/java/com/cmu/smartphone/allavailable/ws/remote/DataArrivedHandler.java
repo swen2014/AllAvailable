@@ -8,7 +8,10 @@ import android.widget.ListView;
 import java.util.List;
 
 /**
- * Created by wangxi on 12/3/15.
+ * Handle the case when data arrived from server
+ *
+ * @author Xi Wang
+ * @version 1.0
  */
 public class DataArrivedHandler extends Handler {
 
@@ -16,13 +19,23 @@ public class DataArrivedHandler extends Handler {
     private ListView listView;
     private boolean isEnd;
 
-
+    /**
+     * Constructor
+     *
+     * @param listView
+     * @param loadingView
+     */
     public DataArrivedHandler(ListView listView, View loadingView) {
         isEnd = false;
         this.listView = listView;
         this.loadingView = loadingView;
     }
 
+    /**
+     * Handle the message
+     *
+     * @param paramMessage
+     */
     @Override
     public void handleMessage(android.os.Message paramMessage) {
         if (paramMessage.what == 1) {
@@ -32,6 +45,12 @@ public class DataArrivedHandler extends Handler {
         }
     }
 
+    /**
+     * Action when data arrived
+     *
+     * @param list
+     * @param isEnd
+     */
     public void serverDataArrived(List list, boolean isEnd) {
         this.isEnd = isEnd;
         android.os.Message localMessage = new Message();

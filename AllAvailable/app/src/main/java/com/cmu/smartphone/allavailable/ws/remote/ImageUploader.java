@@ -13,7 +13,10 @@ import com.loopj.android.http.RequestParams;
 import java.io.ByteArrayOutputStream;
 
 /**
- * Created by wangxi on 11/13/15.
+ * Upload the image
+ *
+ * @author Xi Wang
+ * @version 1.0
  */
 public class ImageUploader {
 
@@ -21,10 +24,22 @@ public class ImageUploader {
 
     private Context context;
 
+    /**
+     * Default constructor
+     *
+     * @param context
+     */
     public ImageUploader(Context context) {
         this.context = context;
     }
 
+    /**
+     * Upload the image
+     *
+     * @param bitmap    the image
+     * @param url       the url of the server
+     * @param eventName the name of the image event
+     */
     public void uploadImage(Bitmap bitmap, String url, String eventName) {
         try {
             ByteArrayOutputStream out = new ByteArrayOutputStream();

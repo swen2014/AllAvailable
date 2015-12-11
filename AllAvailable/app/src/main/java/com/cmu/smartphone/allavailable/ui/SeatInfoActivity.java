@@ -24,6 +24,8 @@ import com.cmu.smartphone.allavailable.exception.NetworkException;
 import com.cmu.smartphone.allavailable.util.JsonHelper;
 import com.cmu.smartphone.allavailable.ws.remote.DataArrivedHandler;
 import com.cmu.smartphone.allavailable.ws.remote.DataReceiver;
+import com.cmu.smartphone.allavailable.ws.remote.ServerConnectionTask;
+import com.cmu.smartphone.allavailable.ws.remote.SessionControl;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -33,6 +35,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * The seat info page
+ *
+ * @author Xi Wang
+ * @version 1.0
+ */
 public class SeatInfoActivity extends AppCompatActivity {
 
     private ListView seatListView;
@@ -53,7 +61,10 @@ public class SeatInfoActivity extends AppCompatActivity {
         currentRoom = (RoomBean) intent.getSerializableExtra("room");
         currentBuilding = (BuildingBean) intent.getSerializableExtra("building");
 
-        String uriAPI = getResources().getText(R.string.host)
+        SessionControl session = SessionControl.getInstance();
+
+//        String uriAPI = getResources().getText(R.string.host)
+        String uriAPI = session.getHostIp(this)
                 + "SeatOperation?action=seats&rId=" + currentRoom.getRoomId();
         Log.v("DEBUG", uriAPI);
         new connectSeats().execute(uriAPI);
@@ -107,7 +118,16 @@ public class SeatInfoActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public class connectSeats extends AsyncTask<String, Integer, List<SeatBean>> {
+    /**
+     * The task to request the seat lists
+     */
+    public class connectSeats extends AsyncTask<String, Integer, List<SeatBean>>
+            implements ServerConnectionTask {
+        /**
+         * Override the onPostExecute method
+         *
+         * @param result
+         */
         @Override
         protected void onPostExecute(List<SeatBean> result) {
             super.onPostExecute(result);
@@ -138,6 +158,12 @@ public class SeatInfoActivity extends AppCompatActivity {
             }
         }
 
+        /**
+         * Override the doInBackground method
+         *
+         * @param arg0
+         * @return
+         */
         @Override
         protected List<SeatBean> doInBackground(String... arg0) {
             ArrayList<SeatBean> tmpSeats = null;

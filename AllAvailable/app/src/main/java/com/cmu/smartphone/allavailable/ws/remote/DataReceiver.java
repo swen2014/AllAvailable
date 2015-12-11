@@ -5,7 +5,10 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * Created by wangxi on 12/3/15.
+ * Receive the data to String
+ *
+ * @author Xi Wang
+ * @version 1.0
  */
 public class DataReceiver {
 

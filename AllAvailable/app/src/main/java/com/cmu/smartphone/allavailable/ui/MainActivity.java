@@ -23,6 +23,12 @@ import com.cmu.smartphone.allavailable.model.ScheduleListItem;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The main page
+ *
+ * @author Xi Wang
+ * @version 1.0
+ */
 public class MainActivity extends AppCompatActivity {
 
     private ListView schedule_list;

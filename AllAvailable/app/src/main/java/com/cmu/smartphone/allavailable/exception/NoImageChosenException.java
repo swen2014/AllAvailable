@@ -4,7 +4,10 @@ import android.content.Context;
 import android.widget.Toast;
 
 /**
- * Created by wangxi on 11/23/15.
+ * The exception to handle the image chosen problem
+ *
+ * @author Xi Wang
+ * @version 1.0
  */
 public class NoImageChosenException extends Exception {
 

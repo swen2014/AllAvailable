@@ -2,6 +2,7 @@ package com.cmu.qiuoffer.Servlet;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.cmu.qiuoffer.DAO.AADAO;
 import com.cmu.qiuoffer.DAO.CommentDAO;
 import com.cmu.qiuoffer.Entities.CommentBean;
+import com.cmu.qiuoffer.Exception.CustomeException;
 import com.cmu.qiuoffer.Util.JsonHelper;
 import com.sun.org.apache.xml.internal.security.exceptions.Base64DecodingException;
 import com.sun.org.apache.xml.internal.security.utils.Base64;
@@ -157,7 +159,7 @@ public class Comment extends HttpServlet {
 	}
 
 	private void dispatchImage(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+			HttpServletResponse response) throws ServletException {
 		// ServletContext cntx = getServletContext();
 
 		String path = request.getParameter("path");
@@ -174,17 +176,29 @@ public class Comment extends HttpServlet {
 		File file = new File(path);
 		response.setContentLength((int) file.length());
 
-		FileInputStream in = new FileInputStream(file);
-		OutputStream out = response.getOutputStream();
+		try {
+			FileInputStream in = new FileInputStream(file);
+			OutputStream out = response.getOutputStream();
 
-		// Copy the contents of the file to the output stream
-		byte[] buf = new byte[1024];
-		int count = 0;
-		while ((count = in.read(buf)) >= 0) {
-			out.write(buf, 0, count);
+			// Copy the contents of the file to the output stream
+			byte[] buf = new byte[1024];
+			int count = 0;
+			while ((count = in.read(buf)) >= 0) {
+				out.write(buf, 0, count);
+			}
+			out.close();
+			in.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			try {
+				throw new CustomeException(1, "No File Provides");
+			} catch (CustomeException e1) {
+				e1.logException();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-		out.close();
-		in.close();
 	}
 
 }
