@@ -88,6 +88,13 @@ public class Comment extends HttpServlet {
 		doGet(request, response);
 	}
 
+	/**
+	 * Make the comment
+	 * 
+	 * @param request
+	 * @param response
+	 * @throws IOException
+	 */
 	private void makeComment(HttpServletRequest request,
 			HttpServletResponse response) throws IOException {
 		PrintWriter out = response.getWriter();
@@ -118,6 +125,13 @@ public class Comment extends HttpServlet {
 		out.close();
 	}
 
+	/**
+	 * Get the comments list
+	 * 
+	 * @param request
+	 * @param response
+	 * @throws IOException
+	 */
 	private void getComments(HttpServletRequest request,
 			HttpServletResponse response) throws IOException {
 		PrintWriter out = response.getWriter();
@@ -132,6 +146,13 @@ public class Comment extends HttpServlet {
 		out.close();
 	}
 
+	/**
+	 * Receive uploading image
+	 * 
+	 * @param request
+	 * @param response
+	 * @throws IOException
+	 */
 	private void uploadImage(HttpServletRequest request,
 			HttpServletResponse response) throws IOException {
 		System.out.println("upload");
@@ -158,6 +179,13 @@ public class Comment extends HttpServlet {
 		}
 	}
 
+	/**
+	 * Dispatch the image to the client
+	 * 
+	 * @param request
+	 * @param response
+	 * @throws ServletException
+	 */
 	private void dispatchImage(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException {
 		// ServletContext cntx = getServletContext();

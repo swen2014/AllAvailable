@@ -86,6 +86,13 @@ public class SeatOperation extends HttpServlet {
 		doGet(request, response);
 	}
 
+	/**
+	 * Get the building list
+	 * 
+	 * @param request
+	 * @param response
+	 * @throws IOException
+	 */
 	private void getBuildings(HttpServletRequest request,
 			HttpServletResponse response) throws IOException {
 		PrintWriter out = response.getWriter();
@@ -102,6 +109,13 @@ public class SeatOperation extends HttpServlet {
 		out.close();
 	}
 
+	/**
+	 * Get the rooms list
+	 * 
+	 * @param request
+	 * @param response
+	 * @throws IOException
+	 */
 	private void getRooms(HttpServletRequest request,
 			HttpServletResponse response) throws IOException {
 		PrintWriter out = response.getWriter();
@@ -116,6 +130,13 @@ public class SeatOperation extends HttpServlet {
 		out.close();
 	}
 
+	/**
+	 * Change the lock status
+	 * 
+	 * @param request
+	 * @param response
+	 * @throws IOException
+	 */
 	private void changeLock(HttpServletRequest request,
 			HttpServletResponse response) throws IOException {
 		PrintWriter out = response.getWriter();
@@ -134,6 +155,13 @@ public class SeatOperation extends HttpServlet {
 		out.close();
 	}
 
+	/**
+	 * Get the seats list
+	 * 
+	 * @param request
+	 * @param response
+	 * @throws IOException
+	 */
 	private void getSeats(HttpServletRequest request,
 			HttpServletResponse response) throws IOException {
 		PrintWriter out = response.getWriter();
@@ -148,6 +176,14 @@ public class SeatOperation extends HttpServlet {
 		out.close();
 	}
 
+	/**
+	 * Dispatch the image
+	 * 
+	 * @param request
+	 * @param response
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	private void dispatchImage(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		// ServletContext cntx = getServletContext();

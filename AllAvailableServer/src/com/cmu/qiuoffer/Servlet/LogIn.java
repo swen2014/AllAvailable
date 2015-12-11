@@ -72,6 +72,13 @@ public class LogIn extends HttpServlet {
 		}
 	}
 
+	/**
+	 * Login the client account
+	 * 
+	 * @param request
+	 * @param response
+	 * @throws IOException
+	 */
 	private void login(HttpServletRequest request, HttpServletResponse response)
 			throws IOException {
 		PrintWriter out = response.getWriter();

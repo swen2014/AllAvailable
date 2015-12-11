@@ -22,27 +22,59 @@ public class CustomeException extends Exception {
 	private int expNo;
 	private String expMsg;
 
+	/**
+	 * Default constructor
+	 * 
+	 * @param no
+	 * @param msg
+	 */
 	public CustomeException(int no, String msg) {
 		this.expNo = no;
 		this.expMsg = msg;
 	}
 
+	/**
+	 * Get the exception number
+	 * 
+	 * @return
+	 */
 	public int getExpNo() {
 		return expNo;
 	}
 
+	/**
+	 * Set the exception number
+	 * 
+	 * @param expNo
+	 */
 	public void setExpNo(int expNo) {
 		this.expNo = expNo;
 	}
 
+	/**
+	 * Get the exception message
+	 * 
+	 * @return the exception message
+	 */
 	public String getExpMsg() {
 		return expMsg;
 	}
 
+	/**
+	 * Set the exception message
+	 * 
+	 * @param expMsg
+	 *            the exception message
+	 */
 	public void setExpMsg(String expMsg) {
 		this.expMsg = expMsg;
 	}
 
+	/**
+	 * Print the error
+	 * 
+	 * @return the error message
+	 */
 	public String printErr() {
 		return null;
 	}

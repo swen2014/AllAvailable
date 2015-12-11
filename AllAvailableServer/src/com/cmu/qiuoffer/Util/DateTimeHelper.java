@@ -5,12 +5,31 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+/**
+ * The tool to parse the date and time
+ * 
+ * @author Xi Wang
+ * @version 1.0
+ */
 public class DateTimeHelper {
+	/**
+	 * Get the formated time string
+	 * 
+	 * @return the formated time string
+	 */
 	public static String getDateTime() {
 		DateFormat df = new SimpleDateFormat("MM/dd/yy HH:mm");
 		return df.format(new Date());
 	}
 
+	/**
+	 * Check whether the time periods overlap
+	 * 
+	 * @param time
+	 * @param lastTime
+	 * @param lastDuration
+	 * @return whether the time periods overlap
+	 */
 	public static boolean checkTimeOverlap(String time, String lastTime,
 			double lastDuration) {
 		Calendar cal1 = Calendar.getInstance();
@@ -33,6 +52,13 @@ public class DateTimeHelper {
 		return false;
 	}
 
+	/**
+	 * Add two times to get a new time
+	 * 
+	 * @param time
+	 * @param duration
+	 * @return a new time string
+	 */
 	public static String addTime(String time, double duration) {
 		Calendar cal1 = Calendar.getInstance();
 		cal1.set(Calendar.HOUR_OF_DAY,

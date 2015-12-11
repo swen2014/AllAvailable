@@ -175,6 +175,9 @@ public abstract class GeneralDAOProxy implements BuildingDAO, CommentDAO,
 		return success;
 	}
 
+	/**
+	 * Cancel the reservation
+	 */
 	@Override
 	public boolean cancelReservation(int reservationId) {
 		boolean success = false;
@@ -503,6 +506,9 @@ public abstract class GeneralDAOProxy implements BuildingDAO, CommentDAO,
 		return success;
 	}
 
+	/**
+	 * Create a user
+	 */
 	@Override
 	public void createUser(UserBean user) {
 		// TODO Auto-generated method stub
@@ -531,6 +537,9 @@ public abstract class GeneralDAOProxy implements BuildingDAO, CommentDAO,
 		}
 	}
 
+	/**
+	 * Get the seat list
+	 */
 	@Override
 	public List<SeatBean> getSeats(int roomId) {
 		// TODO Auto-generated method stub
@@ -565,6 +574,9 @@ public abstract class GeneralDAOProxy implements BuildingDAO, CommentDAO,
 		return re;
 	}
 
+	/**
+	 * Get the room list
+	 */
 	@Override
 	public List<RoomBean> getRooms(int buildingId) {
 		List<RoomBean> re = new LinkedList<RoomBean>();
@@ -601,6 +613,9 @@ public abstract class GeneralDAOProxy implements BuildingDAO, CommentDAO,
 		return re;
 	}
 
+	/**
+	 * Create a room
+	 */
 	@Override
 	public void createRoom(RoomBean room) {
 		// TODO Auto-generated method stub
@@ -631,6 +646,9 @@ public abstract class GeneralDAOProxy implements BuildingDAO, CommentDAO,
 		}
 	}
 
+	/**
+	 * Get the reservation list
+	 */
 	@Override
 	public List<ReservationView> getReservations(String userEmail, String date,
 			String time, boolean history) {
@@ -697,6 +715,9 @@ public abstract class GeneralDAOProxy implements BuildingDAO, CommentDAO,
 		return reservations;
 	}
 
+	/**
+	 * Query if the room is occupied at the given time period
+	 */
 	@Override
 	public boolean queryOccupied(int seatId, String date, String time,
 			double duration) {
@@ -744,6 +765,9 @@ public abstract class GeneralDAOProxy implements BuildingDAO, CommentDAO,
 		return occupied;
 	}
 
+	/**
+	 * Check if the time is avaialable for the user
+	 */
 	public boolean isAvailableAtTime(String email, String date, String time,
 			double duration) {
 		boolean occupied = false;

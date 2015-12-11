@@ -12,6 +12,15 @@ import java.sql.SQLException;
  * @since 11/13/2015
  */
 public abstract class CommonDB {
+	/**
+	 * Get the connection to the DB
+	 * 
+	 * @return the connection object
+	 */
 	public abstract Connection getConnection();
+
+	/**
+	 * Close the connection
+	 */
 	public abstract void close();
 }

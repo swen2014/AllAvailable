@@ -8,8 +8,20 @@ import java.util.Properties;
 
 import com.cmu.qiuoffer.DB.SQLHelper;
 
+/**
+ * The tool helps querying the database
+ * 
+ * @author Xi Wang
+ * @version 1.0
+ */
 public class SQLQueryHelper implements SQLHelper {
 
+	/**
+	 * Get the SQL template string
+	 * 
+	 * @param key
+	 * @return the template string
+	 */
 	public String getSQLTemplate(String key) {
 
 		// retrieve prepare query list

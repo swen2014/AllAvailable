@@ -112,6 +112,9 @@ public class MySQL extends CommonDB {
 		}
 	}
 
+	/**
+	 * Close Database Connection
+	 */
 	public void close() {
 		try {
 			if (conn != null)

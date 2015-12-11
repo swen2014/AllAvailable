@@ -29,10 +29,21 @@ public class SeatBean {
 		this.name = name;
 	}
 
+	/**
+	 * Get the seat id
+	 * 
+	 * @return the seat id
+	 */
 	public int getSeatId() {
 		return seatId;
 	}
 
+	/**
+	 * Set the seat id
+	 * 
+	 * @param seatId
+	 *            the given seat id
+	 */
 	public void setSeatId(int seatId) {
 		this.seatId = seatId;
 	}
@@ -52,10 +63,21 @@ public class SeatBean {
 		this.occupied = occupied;
 	}
 
+	/**
+	 * Get the room id
+	 * 
+	 * @return the room id
+	 */
 	public int getRoomId() {
 		return roomId;
 	}
 
+	/**
+	 * Set the room id
+	 * 
+	 * @param roomId
+	 *            the room id
+	 */
 	public void setRoomId(int roomId) {
 		this.roomId = roomId;
 	}
